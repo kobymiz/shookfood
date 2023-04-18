@@ -7,21 +7,21 @@
         <h1 class="text-white font-weight-bold">{{data.name}}</h1>
         <hr class="divider" />
       </div>
-      <div class="col-lg-8 align-self-baseline">        
+      <div class="col-lg-8 align-self-baseline">
         <div class="card text-center">
           <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item">
-                <button class="nav-link" (click)="viewMode='details'"
-                  [ngClass]="{'active': viewMode==='details'}">פרטים</button>
-              </li>
-              <li class="nav-item">
                 <button class="nav-link" (click)="viewMode='registration'"
                   [ngClass]="{'active': viewMode==='registration'}">מועדים והרשמה</button>
               </li>
+              <li class="nav-item">
+                <button class="nav-link" (click)="viewMode='details'"
+                  [ngClass]="{'active': viewMode==='details'}">פרטים</button>
+              </li>
             </ul>
           </div>
-          <div class="card-body" *ngIf="viewMode=='details'" [innerHTML]="data.longDescription">            
+          <div class="card-body" *ngIf="viewMode=='details'" [innerHTML]="data.longDescription">
           </div>
 
           <div class="card-body" *ngIf="viewMode=='registration'">
@@ -31,16 +31,15 @@
                   <ng-template ngFor let-ws [ngForOf]="slots">
                     <tr class="table-active">
                       <td>
-                        <span class="fw-bold float-end"><i class="mx-2 bi bi-calendar3"></i>{{ws.slot.date | date : 'EEEE'}}</span>
-                        <span class="fw-bold float-start">{{ws.slot.date | date : 'MMM dd, YYYY'}}</span>
+                        <span class="fw-bold float-start"><i class="mx-2 bi bi-calendar3"></i>{{ws.slot.date | date : 'EEEE, dd MMM YYYY'}}</span>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <span class="fw-bold float-end">{{ws.slot.date | date : 'HH:mm'}}</span>
-                        <span>{{data.name}}, יוקנעם עילית, 4 שעות, {{ws.slot.availableSlots}} מקומות פנויים</span>
-                        <span class="fw-bold float-start" *ngIf="ws.slot.availableSlots > 0"><a [routerLink]="['register',data.id]" class="btn btn-sm btn-success">הרשמה</a></span>
-                        <span class="fw-bold float-start" *ngIf="ws.slot.availableSlots == 0"><button class="btn btn-sm btn-secondary" disabled="true">הרשמה</button></span>
+                        <span class="fw-bold float-start">{{ws.slot.date | date : 'HH:mm'}}</span>
+                        <span>{{data.name}}, {{data.location}}, {{data.duration}} שעות, {{ws.slot.availableSlots}} מקומות פנויים</span>
+                        <span class="fw-bold float-end" *ngIf="ws.slot.availableSlots > 0"><button class="btn btn-sm btn-success" (click)="openModal()">הרשמה</button></span>
+                        <span class="fw-bold float-end" *ngIf="ws.slot.availableSlots == 0"><button class="btn btn-sm btn-secondary" disabled="true">הרשמה</button></span>
                       </td>
                     </tr>
                   </ng-template>
@@ -53,3 +52,20 @@
     </div>
   </div>
 </section>
+<div class="modal fade" id="registerationModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

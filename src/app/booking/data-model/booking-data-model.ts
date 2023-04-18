@@ -26,6 +26,8 @@ export interface Workshop{
   imgUrl: string,
   totalSlots: number,
   cost: number,
+  location?: string,
+  duration?: number
 }
 
 export interface WorkshopSlot{
