@@ -1,0 +1,55 @@
+<!-- Masthead-->
+<section class="page-section bg-dark">
+  <div class="container px-4 px-lg-5 h-100" *ngIf="data !=undefined">
+    <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+      <div class="col-lg-8 align-self-end">
+        <h2 class="text-warning font-weight-bold">שוק האוכל של אורן וקובי</h2>
+        <h1 class="text-white font-weight-bold">{{data.name}}</h1>
+        <hr class="divider" />
+      </div>
+      <div class="col-lg-8 align-self-baseline">        
+        <div class="card text-center">
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+              <li class="nav-item">
+                <button class="nav-link" (click)="viewMode='details'"
+                  [ngClass]="{'active': viewMode==='details'}">פרטים</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link" (click)="viewMode='registration'"
+                  [ngClass]="{'active': viewMode==='registration'}">מועדים והרשמה</button>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body" *ngIf="viewMode=='details'" [innerHTML]="data.longDescription">            
+          </div>
+
+          <div class="card-body" *ngIf="viewMode=='registration'">
+            <div *ngIf="slots!=undefined">
+              <table class="table table-bordered">
+                <tbody>
+                  <ng-template ngFor let-ws [ngForOf]="slots">
+                    <tr class="table-active">
+                      <td>
+                        <span class="fw-bold float-end"><i class="mx-2 bi bi-calendar3"></i>{{ws.slot.date | date : 'EEEE'}}</span>
+                        <span class="fw-bold float-start">{{ws.slot.date | date : 'MMM dd, YYYY'}}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="fw-bold float-end">{{ws.slot.date | date : 'HH:mm'}}</span>
+                        <span>{{data.name}}, יוקנעם עילית, 4 שעות, {{ws.slot.availableSlots}} מקומות פנויים</span>
+                        <span class="fw-bold float-start" *ngIf="ws.slot.availableSlots > 0"><a [routerLink]="['register',data.id]" class="btn btn-sm btn-success">הרשמה</a></span>
+                        <span class="fw-bold float-start" *ngIf="ws.slot.availableSlots == 0"><button class="btn btn-sm btn-secondary" disabled="true">הרשמה</button></span>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

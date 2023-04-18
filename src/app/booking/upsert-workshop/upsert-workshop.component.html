@@ -1,0 +1,58 @@
+<section class="page-section bg-dark">
+  <div class="container">
+  <h1 *ngIf="mode=='view'">הוספה סדנא</h1>
+  <h1 *ngIf="mode=='edit'">עדכון סדנא</h1>
+  <div class="row">
+    <div class="col-lg-6" >
+      <div class="card mb-4">
+        <div class="card-body">
+          <form [formGroup]="workshopForm" (submit)="upsertWorkshop()">
+            <div class="mb-3">
+              <label for="txtWorkshopId" class="form-label">מזהה ייחודי</label>
+              <input type="text" class="form-control" id="txtWorkshopId" formControlName="id">
+            </div>
+            <div class="mb-3">
+              <label for="txtWorkshopName" class="form-label">שם סדנא</label>
+              <input type="text" class="form-control" id="txtWorkshopName" formControlName="name">
+            </div>
+            <div class="mb-3">
+              <label for="txtWorkshopDescription" class="form-label">תיאור קצר</label>
+              <textarea rows="3" class="form-control" id="txtWorkshopDescription" formControlName="description"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="txtCost" class="form-label">עלות</label>
+              <input type="number" min="0" max="any" class="form-control" id="txtCost" formControlName="cost">
+            </div>
+            <div class="mb-3">
+              <label for="txtParticipants" class="form-label">כמות משתתפים</label>
+              <input type="number" min="1" max="20" class="form-control" id="txtParticipants" formControlName="totalSlots">
+            </div>
+            <div class="mb-3">
+              <label for="txtDuration" class="form-label">משך הסדנא</label>
+              <input type="number" min="1" max="12" class="form-control" id="txtDuration" formControlName="duration">
+            </div>
+            <div class="mb-3">
+              <label for="txtImageUrl" class="form-label">קישור לתמונה</label>
+              <input type="text" class="form-control" id="txtImageUrl" formControlName="imgUrl">
+            </div>
+            <div class="mb-3">
+              <label for="txtWorkshopDescription" class="form-label">תיאור מורחב</label>
+              <textarea rows="10" class="form-control"  id="txtWorkshopDescription" formControlName="longDescription"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" *ngIf="mode=='view'">יצירה</button>
+            <button type="submit" class="btn btn-primary" *ngIf="mode=='edit'">עדכון</button>
+            <button type="button" class="btn btn-danger" *ngIf="mode=='edit'" (click)="resetForm()">ביטול</button>
+          </form>
+        </div>
+        <div class="card-footer">
+          <div class="mb-2">
+          </div>
+          <div class="d-grid gap-2 w-100 pt-2">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

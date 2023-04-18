@@ -1,0 +1,34 @@
+<!-- Masthead-->
+<header class="masthead">
+  <div class="container px-4 px-lg-5 h-100">
+    <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+      <div class="col-lg-8 align-self-end">
+        <h2 class="text-warning font-weight-bold">שוק האוכל של אורן וקובי</h2>
+        <h1 class="text-white font-weight-bold">הסדנאות שלנו</h1>
+        <hr class="divider" />
+      </div>
+      <div class="col-lg-8 align-self-baseline">
+        <div class="row">
+          <div class="col-md-6 col-xs-12" *ngFor="let ws of workshops">
+            <div class="card mb-4" style="width: 18rem;">
+              <img class="card-img-top" src="{{ws.imgUrl}}" alt="Card image cap">
+              <div class="card-body">
+                <h5>{{ws.name}}</h5>
+                <p class="card-text text-muted">{{ws.description}}</p>
+              </div>
+              <div class="card-footer">
+                <div class="mb-2">
+                  <span class="badge rounded-pill bg-secondary mx-2 float-end">{{ws.cost | currency:'ILS' }} </span>
+                  <span class="badge rounded-pill bg-warning float-start">מקס. {{ws.totalSlots}} בקבוצה</span>
+                </div>
+                <div class="d-grid gap-2 w-100 pt-2">
+                  <a [routerLink]="['/booking/details', ws.id]" class="btn btn-sm btn-primary">פרטים והרשמה</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
