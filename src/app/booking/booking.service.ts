@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, switchMap, tap } from 'rxjs';
-import { Workshop, WorkshopSlot, APIResponse } from './data-model/booking-data-model';
+import { Workshop, WorkshopSlot, APIResponse, User } from './data-model/booking-data-model';
 // Registration input
-/* 
+/*
 {
   "workshopId": "ws-123456",
   "workshopDate": "2026-05-03T16:00:0.511Z",
@@ -42,7 +42,7 @@ interface Database{
 const baseUrl = "https://h05n2d3h2e.execute-api.eu-west-1.amazonaws.com/default/workshops";
 
 var database:Database = {
-  workshops: [    
+  workshops: [
   ],
   workshopSlots: [
     {
@@ -126,7 +126,7 @@ var database:Database = {
 export class BookingService {
   private workshopsLoaded = false;
 
-  constructor(private http:HttpClient) {    
+  constructor(private http:HttpClient) {
   }
 
   public getWorkshops(searchParams: WorkshopSearchParams): Observable<Workshop[]> {
@@ -137,7 +137,7 @@ export class BookingService {
     return this.http.get<APIResponse>(baseUrl).pipe(switchMap(response=>{
       console.log("Response: ", response);
       if(response.status == 0){
-        
+
         var data:Workshop[] = [...response.data.items];
         return of(data);
       }
@@ -147,7 +147,7 @@ export class BookingService {
       console.log("Data: ", data);
       this.workshopsLoaded = true;
       database.workshops = data;
-    }));    
+    }));
   }
 
   public getWorkshopById(id: string): Workshop|undefined {
@@ -160,18 +160,18 @@ export class BookingService {
     return this.getWorkshops({}).pipe(switchMap(data=>{
       var ws = this.getWorkshopById(id);
       return of(ws);
-    }));    
+    }));
   }
 
   public upsertWorkshop(data: Workshop){
     return this.http.post<APIResponse>(baseUrl, data).pipe(switchMap(response=>{
       console.log("Response: ", response);
-      if(response.status == 0){                      
+      if(response.status == 0){
         return of(data);
       }
       console.log("Error occured when getting data from backend");
       return of(data);
-    })); 
+    }));
   }
 
   public getWorkshopSlots(workshopId: string): WorkshopSlot[]|undefined {
@@ -179,30 +179,9 @@ export class BookingService {
 
     return data;
   }
-}
 
-/*
-slots: [{
-        totalSlots:12,
-        availableSlots: 12,
-        date: new Date(2023, 5,3,16,0,0),
-        users: []
-      },
-      {
-        totalSlots:12,
-        availableSlots: 12,
-        date: new Date(2023, 5,10,16,0,0),
-        users: []
-      },{
-        totalSlots:12,
-        availableSlots: 12,
-        date: new Date(2023, 6,3,16,0,0),
-        users: []
-      },
-      {
-        totalSlots:12,
-        availableSlots: 12,
-        date: new Date(2023, 5,10,16,0,0),
-        users: []
-      }],
-*/
+  public register(workshop:Workshop, slot: WorkshopSlot, user: User): Observable<APIResponse>{
+    console.log("Registered user", {workshop,slot, user});
+    return of({status: 0});
+  }
+}

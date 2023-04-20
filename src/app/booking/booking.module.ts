@@ -8,7 +8,6 @@ import { BookingDetailsComponent } from './booking-details/booking-details.compo
 import { BookingSearchComponent } from './booking-search/booking-search.component';
 import { UpsertWorkshopComponent } from './upsert-workshop/upsert-workshop.component';
 
-
 @NgModule({
   declarations: [
     BookingDetailsComponent,

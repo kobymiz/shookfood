@@ -8,7 +8,8 @@ export interface User{
   fullName: string
   phoneNumber: string
   email: string,
-  paid: boolean
+  paid: boolean,
+  participantsNumber: boolean
 }
 
 export interface  Slot {

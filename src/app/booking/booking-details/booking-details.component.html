@@ -38,7 +38,7 @@
                       <td>
                         <span class="fw-bold float-start">{{ws.slot.date | date : 'HH:mm'}}</span>
                         <span>{{data.name}}, {{data.location}}, {{data.duration}} שעות, {{ws.slot.availableSlots}} מקומות פנויים</span>
-                        <span class="fw-bold float-end" *ngIf="ws.slot.availableSlots > 0"><button class="btn btn-sm btn-success" (click)="openModal()">הרשמה</button></span>
+                        <span class="fw-bold float-end" *ngIf="ws.slot.availableSlots > 0"><button class="btn btn-sm btn-success" (click)="startRegistration(ws)">הרשמה</button></span>
                         <span class="fw-bold float-end" *ngIf="ws.slot.availableSlots == 0"><button class="btn btn-sm btn-secondary" disabled="true">הרשמה</button></span>
                       </td>
                     </tr>
@@ -52,20 +52,43 @@
     </div>
   </div>
 </section>
+
 <div class="modal fade" id="registerationModal">
+
   <div class="modal-dialog">
     <div class="modal-content">
+      <form class="form" [formGroup]="registrationForm" (submit)="completeRegistration()">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">טופס הרשמה</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
+      <div class="modal-body" *ngIf="selectedSlot!=undefined && data!=undefined">
+        <p>על מנת להשלים את ההרשמה <span class="fw-bold">ל{{data.name}}</span>, שתיערך ב<span class="fw-bold">{{selectedSlot.slot.date | date : 'EEEE, dd MMM YYYY'}}</span>, בשעה <span class="fw-bold">{{selectedSlot.slot.date | date : 'HH:mm'}}</span>, אנא מלא/י את הפרטים הבאים</p>
+          <div class="mb-3">
+            <label for="txtFullName" class="form-label">שם מלא:</label>
+            <input type="text" class="form-control" id="txtFullName" formControlName="name">
+            <span class="text-danger" *ngIf="registrationForm.controls['name'].errors && (!registrationForm.controls['name'].pristine || registerFormSubmitted)">נא למלא שם מלא</span>
+          </div>
+          <div class="mb-3">
+            <label for="txtEmail" class="form-label">דוא"ל:</label>
+            <input type="email" class="form-control" id="txtEmail" formControlName="email">
+            <span class="text-danger" *ngIf="registrationForm.controls['email'].errors && (!registrationForm.controls['email'].pristine || registerFormSubmitted)">נא למלא כתובת מייל</span>
+          </div>
+          <div class="mb-3">
+            <label for="txtPhoneNumber" class="form-label">מספר טלפון:</label>
+            <input type="text" class="form-control" id="txtPhoneNumber" formControlName="phoneNumber">
+            <span class="text-danger" *ngIf="registrationForm.controls['phoneNumber'].errors && (!registrationForm.controls['phoneNumber'].pristine || registerFormSubmitted)">נא למלא מספר טלפון בו נוכל ליצור קשר כדי להשלים את ההרשמה</span>
+          </div>
+          <div class="mb-3">
+            <label for="txtNumParticipants" class="form-label">כמות משתתפים</label>
+            <input type="number" min="1" max="4" class="form-control" id="txtNumParticipants" formControlName="participantsNumber">
+          </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">הרשמה</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ביטול</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
