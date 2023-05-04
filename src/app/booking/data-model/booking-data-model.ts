@@ -5,11 +5,11 @@ export interface APIResponse{
 }
 
 export interface User{
-  fullName: string
-  phoneNumber: string
+  id: string
+  fullName: string,
+  phoneNumber: string,
   email: string,
-  paid: boolean,
-  participantsNumber: boolean
+  paid: boolean
 }
 
 export interface  Slot {
@@ -33,5 +33,6 @@ export interface Workshop{
 
 export interface WorkshopSlot{
   workshopId: string,
+  workshopDate: Date,
   slot: Slot
 }
