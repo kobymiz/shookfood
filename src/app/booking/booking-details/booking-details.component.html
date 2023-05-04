@@ -71,8 +71,8 @@
             קשר להשלמת ההרשמה והסדרת התשלום</div>
           <div class="alert alert-danger" *ngIf="showRegistrationError">{{errorMessage}}</div>
           <p>על מנת להשלים את ההרשמה <span class="fw-bold">ל{{data.name}}</span>, שתיערך ב<span
-              class="fw-bold">{{selectedSlot.slot.date | date : 'EEEE, dd MMM YYYY'}}</span>, בשעה <span
-              class="fw-bold">{{selectedSlot.slot.date | date : 'HH:mm'}}</span>, אנא מלא/י את הפרטים הבאים</p>
+              class="fw-bold">{{selectedSlot.workshopDate| date : 'EEEE, dd MMM YYYY'}}</span>, בשעה <span
+              class="fw-bold">{{selectedSlot.workshopDate | date : 'HH:mm'}}</span>, אנא מלא/י את הפרטים הבאים</p>
           <div class="mb-3">
             <label for="txtFullName" class="form-label">שם מלא:</label>
             <input type="text" class="form-control" id="txtFullName" formControlName="name">

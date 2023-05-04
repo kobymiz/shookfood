@@ -13,11 +13,14 @@ export class BookingSearchComponent implements OnInit {
   constructor(private bookingService: BookingService) { }
 
   workshops: Workshop[] = [];
+  loadingData = false;
 
   ngOnInit(): void {
+    this.loadingData = true;
     this.bookingService.getWorkshops({}).pipe(take(1)).subscribe(data=>{
       this.workshops = data;
       console.log("Data: ", data);
+      this.loadingData = false;
     });
   }
 
