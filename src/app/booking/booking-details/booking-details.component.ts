@@ -24,7 +24,7 @@ export class BookingDetailsComponent implements OnInit {
   showRegistrationSuccess = false;
   showRegistrationError = false;
   errorMessage = "";
-
+  loadingData = false;
   formModal: any;
 
   registrationForm = new FormGroup({
@@ -36,7 +36,7 @@ export class BookingDetailsComponent implements OnInit {
   registerFormSubmitted = false;
 
   ngOnInit(): void {
-
+    this.loadingData = true;
     this.initModal();
 
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -47,6 +47,7 @@ export class BookingDetailsComponent implements OnInit {
         });
         this.bookingService.getWorkshopSlots(this.id).subscribe(data => {
           this.slots = data;
+          this.loadingData = false;
         });
       }
     })

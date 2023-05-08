@@ -343,6 +343,18 @@ body {
   height: 100%;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+}
+
+.animate-flicker {
+    animation: fadeIn 1s infinite alternate;
+}
+
+.animate-bg-light{
+  background-color: rgba(0,0,0,.03);
+}
+
 .page-section {
   padding: 8rem 0;
 }

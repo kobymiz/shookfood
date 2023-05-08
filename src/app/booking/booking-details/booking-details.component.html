@@ -25,6 +25,9 @@
           </div>
 
           <div class="card-body" *ngIf="viewMode=='registration'">
+            <div *ngIf="loadingData">
+              <h1 class="animate-flicker">...</h1>
+            </div>
             <div *ngIf="slots!=undefined">
               <table class="table table-bordered">
                 <tbody>

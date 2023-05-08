@@ -8,7 +8,22 @@
         <hr class="divider" />
       </div>
       <div class="col-lg-8 align-self-baseline">
-        <div class="row">
+        <div class="row" *ngIf="loadingData">
+          <div class="col-md-6 col-xs-12" *ngFor="let ws of workshops">
+            <div class="card mb-4" style="width: 18rem;">
+              <img class="card-img-top animate-flicker" src="assets/img/blank.png" alt="Card image cap">
+              <div class="card-body animate-bg-light">
+                <h1 class="animate-flicker">...</h1>
+              </div>
+              <div class="card-footer">
+                <div class="d-grid gap-2 w-100 pt-2 animate-flicker">
+                  <a href="javascript:void(0)" class="btn btn-sm btn-secondary">&nbsp;</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!loadingData">
           <div class="col-md-6 col-xs-12" *ngFor="let ws of workshops">
             <div class="card mb-4" style="width: 18rem;">
               <img class="card-img-top" src="{{ws.imgUrl}}" alt="Card image cap">
