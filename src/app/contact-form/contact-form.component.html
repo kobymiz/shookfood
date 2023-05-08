@@ -18,31 +18,30 @@
                 <!-- To make this form functional, sign up at-->
                 <!-- https://startbootstrap.com/solution/contact-forms-->
                 <!-- to get an API token!-->
-                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                <form id="contactForm" [formGroup]="contactForm" (submit)="sendMessage()">
                     <!-- Name input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" formControlName="fullName" />
                         <label for="name">שם מלא</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">חובה למלא שם</div>
+                        <div class="text-danger" *ngIf="contactForm.controls['fullName'].errors && (!contactForm.controls['fullName'].pristine || contactFormSubmitted)">חובה למלא שם</div>
                     </div>
                     <!-- Email address input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
+                        <input class="form-control" id="email" type="email" placeholder="name@example.com" formControlName="emailAddress" />
                         <label for="email">כתובת אימייל</label>
-                        <div class="invalid-feedback" data-sb-feedback="email:required">חובה למלא כתובת מייל</div>
-                        <div class="invalid-feedback" data-sb-feedback="email:email">כתובת מייל אינה חוקית</div>
+                        <div class="text-danger" *ngIf="contactForm.controls['emailAddress'].errors && (!contactForm.controls['emailAddress'].pristine || contactFormSubmitted)">חובה למלא כתובת מייל</div>
                     </div>
                     <!-- Phone number input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
+                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" formControlName="phoneNumber"/>
                         <label for="phone">מספר טלפון</label>
-                        <div class="invalid-feedback" data-sb-feedback="phone:required">חובה למלא מספר טלפון.</div>
+                        <div class="text-danger" *ngIf="contactForm.controls['phoneNumber'].errors && (!contactForm.controls['phoneNumber'].pristine || contactFormSubmitted)">חובה למלא מספר טלפון.</div>
                     </div>
                     <!-- Message input-->
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
+                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" formControlName="body"></textarea>
                         <label for="message">הודעה</label>
-                        <div class="invalid-feedback" data-sb-feedback="message:required">חובה למלא הודעה.</div>
+                        <div class="text-danger" *ngIf="contactForm.controls['body'].errors && (!contactForm.controls['body'].pristine || contactFormSubmitted)">חובה למלא הודעה.</div>
                     </div>
                     <!-- Submit success message-->
                     <!---->
@@ -51,7 +50,7 @@
                     <div class="d-none" id="submitSuccessMessage">
                         <div class="text-center mb-3">
                             <div class="fw-bolder">ההודעה נשלחה בהצלחה!</div>
-                            קילבנו את ההודעה, נחזור אליכם בהקדם                            
+                            קילבנו את ההודעה, נחזור אליכם בהקדם
                         </div>
                     </div>
                     <!-- Submit error message-->
@@ -60,7 +59,7 @@
                     <!-- an error submitting the form-->
                     <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                     <!-- Submit Button-->
-                    <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">שלחו לנו הודעה</button></div>
+                    <div class="d-grid"><button class="btn btn-primary btn-xl" id="submitButton" type="submit">שלחו לנו הודעה</button></div>
                 </form>
             </div>
         </div>
