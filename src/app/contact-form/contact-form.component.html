@@ -11,6 +11,12 @@
         </div>
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
             <div class="col-lg-6">
+                <div class="alert alert-success text-center" *ngIf="messageSuccess">ההודעה נשלחה בהצלחה. נחזור אלייך בהקדם</div>
+                <div class="alert alert-danger text-center" *ngIf="messageFailed">אירעה שגיאה בהלך שליחת ההודעה. ניתן לנסות שוב או לחלופין לשלוח לנו הודעה בווטאספ</div>
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+            <div class="col-lg-6">
                 <!-- * * * * * * * * * * * * * * *-->
                 <!-- * * SB Forms Contact Form * *-->
                 <!-- * * * * * * * * * * * * * * *-->
@@ -59,7 +65,9 @@
                     <!-- an error submitting the form-->
                     <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                     <!-- Submit Button-->
-                    <div class="d-grid"><button class="btn btn-primary btn-xl" id="submitButton" type="submit">שלחו לנו הודעה</button></div>
+                    <div class="d-grid"><button [disabled]="sendingInProgress" class="btn btn-primary btn-xl" id="submitButton" type="submit">
+                        <span class="spinner-border spinner-border-sm" [class.d-none]="!sendingInProgress"></span>
+                        שלחו לנו הודעה</button></div>
                 </form>
             </div>
         </div>

@@ -15,22 +15,36 @@ export class ContactFormComponent {
     body: new FormControl('', [Validators.required])
   });
   contactFormSubmitted = false;
+  sendingInProgress = false;
+  messageSuccess = false;
+  messageFailed = false;
+  messageFailureErrorMessage = '';
 
-  constructor(private contactService: ContactService){
+  constructor(private contactService: ContactService) {
 
   }
 
-  sendMessage(){
+  sendMessage() {
+    this.sendingInProgress = true;
+    this.messageSuccess = false;
+    this.messageFailed = false;
     this.contactFormSubmitted = true;
-    if(!this.contactForm.valid){
-      console.log("Invalid form")
+
+    if (!this.contactForm.valid) {
+      this.sendingInProgress = false;
+      console.log("Invalid form");
       return;
     }
 
     var params = this.contactForm.value;
 
-    this.contactService.sendMessage(params).subscribe(response=>{
-      console.log("Send message response: ", response);
+    this.contactService.sendMessage(params).subscribe(response => {
+      if (response.status == 0) {
+        this.messageSuccess = true;
+      } else {
+        this.messageFailed = false;
+      }
+      this.sendingInProgress = false;
     });
   }
 }
