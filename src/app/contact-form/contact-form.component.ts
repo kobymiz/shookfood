@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ContactService } from './contact.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'contact-form',
@@ -8,11 +8,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class ContactFormComponent {
 
-  contactForm = new FormGroup({
-    fullName: new FormControl('', [Validators.required]),
-    phoneNumber: new FormControl('', [Validators.required]),
-    emailAddress: new FormControl('', [Validators.required]),
-    body: new FormControl('', [Validators.required])
+  contactForm = new UntypedFormGroup({
+    fullName: new UntypedFormControl('', [Validators.required]),
+    phoneNumber: new UntypedFormControl('', [Validators.required]),
+    emailAddress: new UntypedFormControl('', [Validators.required]),
+    body: new UntypedFormControl('', [Validators.required])
   });
   contactFormSubmitted = false;
   sendingInProgress = false;

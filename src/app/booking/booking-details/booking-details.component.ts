@@ -83,9 +83,9 @@ export class BookingDetailsComponent implements OnInit {
     var formValue = this.registrationForm.value;
     var user: User = {
       id: '',
-      fullName: formValue.name,
-      email: formValue.email,
-      phoneNumber: formValue.phoneNumber,
+      fullName: formValue.name??'',
+      email: formValue.email??'',
+      phoneNumber: formValue.phoneNumber??'',
       paid: false
     };
     if (this.data != undefined && this.selectedSlot != undefined) {

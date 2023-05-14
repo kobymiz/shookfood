@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../booking.service';
 import { Workshop } from '../data-model/booking-data-model';
 import { first, take } from 'rxjs/operators';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
@@ -15,21 +15,21 @@ export class UpsertWorkshopComponent implements OnInit {
   id = '';
   data: Workshop | undefined = undefined;
 
-  workshopForm = new FormGroup({
-    id: new FormControl('ws-123'),
-    name: new FormControl(''),
-    description: new FormControl(''),
-    longDescription: new FormControl(''),
-    cost: new FormControl(0),
-    duration: new FormControl(0),
-    totalSlots: new FormControl(0),
-    imgUrl: new FormControl(''),
+  workshopForm = new UntypedFormGroup({
+    id: new UntypedFormControl('ws-123'),
+    name: new UntypedFormControl(''),
+    description: new UntypedFormControl(''),
+    longDescription: new UntypedFormControl(''),
+    cost: new UntypedFormControl(0),
+    duration: new UntypedFormControl(0),
+    totalSlots: new UntypedFormControl(0),
+    imgUrl: new UntypedFormControl(''),
   });
 
   constructor(private route: ActivatedRoute, private bookingService: BookingService) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params: ParamMap) => {      
+    this.route.paramMap.subscribe((params: ParamMap) => {
       this.id = params.get('id')??'';
       console.log("Workshop id: ", this.id);
       if(this.id){
@@ -45,8 +45,8 @@ export class UpsertWorkshopComponent implements OnInit {
             console.log("Changed mode from view to edit. Form data: ", this.workshopForm.value);
           }
         });
-        
-      }      
+
+      }
     })
   }
 
@@ -55,7 +55,7 @@ export class UpsertWorkshopComponent implements OnInit {
     console.log("Upserting Workshop", this.data);
     this.bookingService.upsertWorkshop(data).subscribe(response=>{
       console.log("Upsert result: ", response);
-    })    
+    })
   }
 
   resetForm(){
