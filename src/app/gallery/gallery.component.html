@@ -1,2 +1,22 @@
-<!-- Masthead-->
-Gallery Name: {{galleryName}}
+<header class="gallery-masthead">
+  <div class="row justify-content-center">
+    <div class="col text-center">
+      <h1 class="text-white font-weight-bold mt-2" *ngIf="gallery!=undefined">
+        {{gallery.title}}
+      </h1>
+      <hr class="divider" />
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-10 mb-4">
+      <h5>
+        <a class="btn btn-dark" href="/#galleries">
+          <i class="bi bi-arrow-right"></i>
+          חזרה לרשימת הגלריות</a>
+      </h5>
+      <gallery [flexBorderSize]="3" [flexImageSize]="7" [galleryName]="galleryName" [maxRowsPerPage]=" 100"
+        [includeViewer]="true">
+      </gallery>
+    </div>
+  </div>
+</header>

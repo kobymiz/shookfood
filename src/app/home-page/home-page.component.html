@@ -18,16 +18,6 @@
   </div>
 </header>
 
-<div id="gallery">
-  <h2 class="text-center mt-3">גלריית תמונות</h2>
-  <gallery
-    [flexBorderSize]="3"
-    [flexImageSize]="7"
-    [galleryName]="'atmosphere'"
-    [maxRowsPerPage]="100"
-    [includeViewer]="true"
-></gallery>
-</div>
 <!-- About-->
 <about-us></about-us>
 
@@ -36,6 +26,9 @@
 
 <!-- Portfolio-->
 <portfolio></portfolio>
+
+<!--Image galeries-->
+<app-galleries-list></app-galleries-list>
 
 <!-- Contact-->
 <contact-form></contact-form>

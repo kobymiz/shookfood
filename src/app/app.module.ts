@@ -17,6 +17,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BookingModule } from './booking/booking.module';
 import { Angular2ImageGalleryModule } from 'angular2-image-gallery';
+import { GalleriesListComponent } from './gallery/galleries-list.component';
+import { GalleryComponent } from './gallery/gallery.component';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { Angular2ImageGalleryModule } from 'angular2-image-gallery';
     AboutUsComponent,
     EventsComponent,
     PortfolioComponent,
-    ContactFormComponent
+    ContactFormComponent,
+    GalleriesListComponent,
+    GalleryComponent
   ],
   imports: [
     BrowserModule,

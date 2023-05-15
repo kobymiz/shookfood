@@ -1,0 +1,91 @@
+<section class="page-section bg-light" id="galleries">
+  <div class="container px-4 px-lg-5">
+    <h2 class="text-center text-dark mt-0">קצת תמונות מאירועים</h2>
+    <hr class="divider divider-dark" />
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-lg-4 col-md-6 col-sm-12 text-center" *ngFor="let gallery of galleries$ | async">
+        <div class="card mx-3 mb-3" style="width: 18rem; height:20rem">
+          <img class="card-img-top" [src]="gallery.previewImage" [alt]="gallery.title">
+          <div class="card-body">
+            <h5 class="card-title">{{gallery.title}}</h5>
+
+            <a href="gallery/{{gallery.name}}" class="btn btn-primary">לגלריה</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+<section class="page-section" id="services">
+  <div class="container px-4 px-lg-5">
+      <h2 class="text-center mt-0">אירועים</h2>
+      <hr class="divider" />
+      <div class="row">
+          <div class="col">
+              <p class="text-muted text-center">לא משנה מה אתם חוגגים, תנו לנו לדאוג לכל מה שקשור לאוכל</p>
+              <p class="text-muted text-center">עמדת העבודה המעוצבת שלנו לא תשאיר אף אחד אדיש</p>
+              <p class="text-muted text-center">האוכל המדהים שלנו לא ישאיר אף אחד רעב</p>
+              <p class="text-muted text-center">נפנק אתכם ממגוון המנות שיש לנו בתפריט שכולל מנות פתיחה, סלטים, מגוון מאפים בטאבון וכמובן קינוחים</p>
+          </div>
+      </div>
+      <div class="row gx-4 gx-lg-5">
+          <div class="col-lg-3 col-md-6 text-center">
+              <div class="mt-5">
+                  <div class="mb-2"><i class="bi-house fs-1 text-primary"></i></div>
+                  <h3 class="h4 mb-2">מפגש משפחתי</h3>
+                  <p class="text-muted mb-0"></p>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+              <div class="mt-5">
+                  <div class="mb-2"><i class="bi-flower1 fs-1 text-primary"></i></div>
+                  <h3 class="h4 mb-2">בר/בת מצווה</h3>
+                  <p class="text-muted mb-0"></p>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+              <div class="mt-5">
+                  <div class="mb-2"><i class="bi-gift fs-1 text-primary"></i></div>
+                  <h3 class="h4 mb-2">ימי הולדת</h3>
+                  <p class="text-muted mb-0"></p>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+              <div class="mt-5">
+                  <div class="mb-2"><i class="bi-heart fs-1 text-primary"></i></div>
+                  <h3 class="h4 mb-2">יום נישואין</h3>
+                  <p class="text-muted mb-0"></p>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+              <div class="mt-5">
+                  <div class="mb-2"><i class="bi-gender-ambiguous fs-1 text-primary"></i></div>
+                  <h3 class="h4 mb-2">מסיבת רווקים/ות</h3>
+                  <p class="text-muted mb-0"></p>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+              <div class="mt-5">
+                  <div class="mb-2"><i class="bi-people fs-1 text-primary"></i></div>
+                  <h3 class="h4 mb-2">פעילות גיבוש</h3>
+                  <p class="text-muted mb-0"></p>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+              <div class="mt-5">
+                  <div class="mb-2"><i class="bi-emoji-heart-eyes fs-1 text-primary"></i></div>
+                  <h3 class="h4 mb-2">סתם ככה להתפנק</h3>
+                  <p class="text-muted mb-0"></p>
+              </div>
+          </div>
+      </div>
+      <div class="row mt-5">
+          <div class="col text-center">
+              <a class="btn btn-primary btn-xl" href="#contact">לתיאום אירוע ופרטים נוספים</a>
+          </div>
+      </div>
+  </div>
+</section>
+-->

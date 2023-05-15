@@ -2,31 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { Workshop, WorkshopSlot, APIResponse, User } from './data-model/booking-data-model';
-// Registration input
-/*
-{
-  "workshopId": "ws-123456",
-  "workshopDate": "2026-05-03T16:00:0.511Z",
-  "user": {
-    "id": "a29ieW1pekB3YWxsYS5jb218S29ieSBNaXpyYWh5",
-    "email": "kobymiz@walla.com",
-    "name": "Koby Mizrahy",
-    "phoneNumber": "054-3899313"
-  }
-}
-
-*/
-
-// Unregister input
-/*
-{
-  "workshopId": "ws-123456",
-  "workshopDate": "2026-05-03T16:00:0.511Z",
-  "user": {
-    "id": "a29ieW1pekB3YWxsYS5jb218S29ieSBNaXpyYWh5"
-  }
-}
-*/
 
 export interface WorkshopSearchParams {
   startDate?: Date
@@ -44,14 +19,14 @@ const wsSlotsUrl = baseUrl + "/ws-slots";
 const registerUrl = baseUrl + "/register";
 
 var database:Database = {
-  workshops: []  
+  workshops: []
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
-  private workshopsLoaded = false;  
+  private workshopsLoaded = false;
 
   constructor(private http:HttpClient) {
   }
@@ -101,7 +76,7 @@ export class BookingService {
     }));
   }
 
-  public getWorkshopSlots(workshopId: string): Observable<WorkshopSlot[]> {    
+  public getWorkshopSlots(workshopId: string): Observable<WorkshopSlot[]> {
     return this.http.get<APIResponse>(wsSlotsUrl + "?workshopId=" + workshopId).pipe(switchMap(response=>{
       console.log("Response: ", response);
       if(response.status == 0){
@@ -111,8 +86,8 @@ export class BookingService {
       console.log("Error occured when getting data from backend");
       return of([]);
     }), tap(data=>{
-      console.log("Data: ", data);      
-    }));     
+      console.log("Data: ", data);
+    }));
   }
 
   public register(workshop:Workshop, slot: WorkshopSlot, user: User): Observable<APIResponse>{
@@ -131,7 +106,7 @@ export class BookingService {
       }
       console.log("Error occured when getting data from backend");
       return of(response);
-    }));    
+    }));
   }
 }
 
