@@ -112,6 +112,23 @@
   --bs-btn-disabled-border-color: #198754;
 }
 
+.btn-facebook {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #3B5998;;
+  --bs-btn-border-color: #3B5998;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #2f477a;
+  --bs-btn-hover-border-color: #2f477a;
+  --bs-btn-focus-shadow-rgb: 11, 172, 204;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #3B5998;
+  --bs-btn-active-border-color: #3B5998;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #000;
+  --bs-btn-disabled-bg: #3B5998;
+  --bs-btn-disabled-border-color: #3B5998;
+}
+
 .btn-info {
   --bs-btn-color: #000;
   --bs-btn-bg: #0dcaf0;
@@ -551,4 +568,57 @@ header.gallery-masthead h1, gallery-header.masthead .h1 {
 }
 #portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption, #portfolio .container-sm .portfolio-box:hover .portfolio-box-caption, #portfolio .container-md .portfolio-box:hover .portfolio-box-caption, #portfolio .container-lg .portfolio-box:hover .portfolio-box-caption, #portfolio .container-xl .portfolio-box:hover .portfolio-box-caption, #portfolio .container-xxl .portfolio-box:hover .portfolio-box-caption {
   opacity: 1;
+}
+
+/* Social Bar */
+.icon-bar { 
+  opacity: 80%;   
+}
+
+.icon-bar a {
+  
+  text-align: center;
+  padding: 6px;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 20px;
+}
+
+.icon-bar a.edge-right {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.icon-bar a.edge-left {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.icon-bar a:hover {
+  background-color: #000;
+}
+
+.facebook {
+  background: #3B5998;
+  color: white;
+}
+
+.whatsapp {
+  background: #25D366;
+  color: white;
+}
+
+.google {
+  background: #dd4b39;
+  color: white;
+}
+
+.linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.instagram {
+  background: #E1306C;
+  color: white;
 }
