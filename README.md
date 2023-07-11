@@ -25,3 +25,11 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Website Hosting and deploy
+
+Website is hosted on Google Firebase
+
+Deploymnet Instructions: https://www.tutorialspoint.com/firebase/firebase_deploying.htm 
+
+Quick deploy: Go-to `dist.firebase` folder, run `firebase deploy`

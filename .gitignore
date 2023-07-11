@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+/dist.firebase/public
 
 # Node
 /node_modules
