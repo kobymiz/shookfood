@@ -9,7 +9,8 @@ export interface User{
   fullName: string,
   phoneNumber: string,
   email: string,
-  paid: boolean
+  paid: boolean,
+  regsiterationDate: Date
 }
 
 export interface  Slot {

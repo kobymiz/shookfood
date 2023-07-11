@@ -42,7 +42,7 @@
                     <tr>
                       <td>
                         <span class="fw-bold float-start">{{ws.workshopDate | date : 'HH:mm'}}</span>
-                        <span>{{data.name}}, {{data.location}}, {{data.duration}} שעות, {{ws.slot.availableSlots}}
+                        <span>{{data.name}}, {{data.location}}, {{data.duration}} שעות, {{displayAvailableSlots(ws.slot.availableSlots)}}
                           מקומות פנויים</span>
                         <span class="fw-bold float-end" *ngIf="ws.slot.availableSlots > 0"><button
                             class="btn btn-sm btn-success" (click)="startRegistration(ws)">הרשמה</button></span>

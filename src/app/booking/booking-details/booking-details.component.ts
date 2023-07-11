@@ -27,6 +27,8 @@ export class BookingDetailsComponent implements OnInit {
   loadingData = false;
   formModal: any;
 
+  maxAvailableSlotsToShow = 7;
+
   registrationForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
@@ -51,6 +53,14 @@ export class BookingDetailsComponent implements OnInit {
         });
       }
     })
+  }
+
+  displayAvailableSlots(wsAvailableSlots:number){
+    if(wsAvailableSlots > this.maxAvailableSlotsToShow){
+      return Math.floor(Math.random() * (this.maxAvailableSlotsToShow - 2 + 1) + 2);
+    }
+
+    return wsAvailableSlots;
   }
 
   private initModal(): void {
@@ -86,8 +96,10 @@ export class BookingDetailsComponent implements OnInit {
       fullName: formValue.name??'',
       email: formValue.email??'',
       phoneNumber: formValue.phoneNumber??'',
-      paid: false
+      paid: false,
+      regsiterationDate: new Date()
     };
+
     if (this.data != undefined && this.selectedSlot != undefined) {
       this.bookingService.register(this.data, this.selectedSlot, user).subscribe(data => {
         console.log("Registration status: ", data);
