@@ -29,7 +29,8 @@
               <h1 class="animate-flicker">...</h1>
             </div>
             <div *ngIf="slots!=undefined">
-              <table class="table table-bordered">
+              <p *ngIf="slots.length == 0">לא נמצאו מועדים פנויים לסדנא זו.</p>
+              <table class="table table-bordered" *ngIf="slots.length >0">
                 <tbody>
                   <ng-template ngFor let-ws [ngForOf]="slots">
                     <tr class="table-active">
