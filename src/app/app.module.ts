@@ -19,6 +19,7 @@ import { BookingModule } from './booking/booking.module';
 import { Angular2ImageGalleryModule } from 'angular2-image-gallery';
 import { GalleriesListComponent } from './gallery/galleries-list.component';
 import { GalleryComponent } from './gallery/gallery.component';
+import { ClientsFeedbackComponent } from './clients-feedback/clients-feedback.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { GalleryComponent } from './gallery/gallery.component';
     EventsComponent,
     PortfolioComponent,
     ContactFormComponent,
+    ClientsFeedbackComponent,
     GalleriesListComponent,
     GalleryComponent
   ],
