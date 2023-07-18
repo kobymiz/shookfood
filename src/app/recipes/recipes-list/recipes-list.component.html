@@ -1,0 +1,22 @@
+<!-- Masthead-->
+<header class="masthead">
+  <div class="container px-4 px-lg-5 h-100">
+    <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+      <div class="col-lg-8 align-self-end">
+        <h2 class="text-warning font-weight-bold">שוק האוכל של אורן וקובי</h2>
+        <h1 class="text-white font-weight-bold">ספר המתכונים שלנו</h1>
+        <hr class="divider" />
+      </div>
+      <div class="row">
+        <div class="col">
+          <ul>
+            <li *ngFor="let recipe of recipes">
+              <a [routerLink]="['/recipes/view', recipe.id]">{{ recipe.recipe_name }}</a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

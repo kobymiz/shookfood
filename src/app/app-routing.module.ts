@@ -13,6 +13,13 @@ const routes: Routes = [
       title: 'Booking'
     }
   },
+  {
+    path: 'recipes',
+    loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipesModule),
+    data: {
+      title: 'Recipes'
+    }
+  }
 ];
 
 @NgModule({

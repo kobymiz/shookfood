@@ -1,0 +1,12 @@
+<div *ngIf="recipe != undefined">
+  <h2>{{ recipe.recipe_name }}</h2>
+  <p>{{ recipe.description }}</p>
+  <h3>Ingredients:</h3>
+  <ul>
+    <li *ngFor="let ingredient of recipe.ingredients">{{ ingredient }}</li>
+  </ul>
+  <h3>Instructions:</h3>
+  <ol>
+    <li *ngFor="let instruction of recipe.instructions">{{ instruction }}</li>
+  </ol>
+</div>

@@ -20,6 +20,7 @@ import { Angular2ImageGalleryModule } from 'angular2-image-gallery';
 import { GalleriesListComponent } from './gallery/galleries-list.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { ClientsFeedbackComponent } from './clients-feedback/clients-feedback.component';
+import { RecipesModule } from './recipes/recipes.module';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ClientsFeedbackComponent } from './clients-feedback/clients-feedback.co
     BrowserAnimationsModule,
     AppRoutingModule,
     BookingModule,
+    RecipesModule,
     FormsModule,
     ReactiveFormsModule,
     Angular2ImageGalleryModule,
