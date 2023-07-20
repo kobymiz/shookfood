@@ -13,6 +13,12 @@ export interface Ingredient {
   quantity: number;
 }
 
+export interface Category{
+  name: string;
+  id: string;  
+}
+
+
 export interface APIResponse{
   status: number;
   error?: any;

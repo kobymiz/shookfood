@@ -29,5 +29,8 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "include": [   
+    "typings.d.ts" // Add the path to typings.d.ts here
+  ]
 }

@@ -1,20 +1,36 @@
 <!-- Masthead-->
-<header class="masthead">
+<header class="gallery-masthead">
   <div class="container px-4 px-lg-5 h-100">
     <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
       <div class="col-lg-8 align-self-end">
         <h2 class="text-warning font-weight-bold">שוק האוכל של אורן וקובי</h2>
         <h1 class="text-white font-weight-bold">ספר המתכונים שלנו</h1>
         <hr class="divider" />
-      </div>
-      <div class="row">
-        <div class="col">
-          <ul>
-            <li *ngFor="let recipe of recipes">
-              <a [routerLink]="['/recipes/view', recipe.id]">{{ recipe.recipe_name }}</a>
-            </li>
-          </ul>
-
+        <nav class="navbar navbar-expand navbar-light bg-light mb-3">
+          <div class="container-fluid">
+            <span class="navbar-brand" href="#">קטגוריות</span>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item" *ngFor="let cat of categories">
+                  <button class="btn btn-link btn-light" (click)="filterByCategory(cat)"
+                    [ngClass]="{active: selectedCategory===cat}">{{cat.name}}</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3">
+          <div class="col mb-3" *ngFor="let recipe of filteredRecipes">
+            <div class="card">
+              <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" class="card-img-top"
+                [alt]="recipe.recipe_name" />
+              <div class="card-body">
+                <h5 class="card-title">{{recipe.recipe_name}}</h5>
+                <p class="card-text">{{recipe.description}}</p>
+                <button class="btn btn-primary" (click)="viewRecipe(recipe)">למתכון המלא</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

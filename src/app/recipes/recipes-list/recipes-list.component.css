@@ -1,0 +1,19 @@
+/* Adjust carousel slide width based on the number of items per row */
+.carousel-inner .carousel-item {
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-inner .carousel-item .row {
+  flex-wrap: nowrap; /* Prevent carousel slides from wrapping */
+}
+
+.carousel-inner .carousel-item .col {
+  flex: 0 0 25%; /* Set a fixed width for each carousel slide (in this example, 3 items per row) */
+}
+
+@media (max-width: 768px) {
+  .carousel-inner .carousel-item .col {
+    flex: 0 0 50%; /* On smaller screens, display 2 items per row */
+  }
+}
