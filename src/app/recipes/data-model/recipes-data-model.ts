@@ -3,6 +3,7 @@ export interface Recipe {
   recipe_name: string;
   description: string;
   category_id: string;
+  image: string;
   ingredients: Ingredient[];
   instructions: string[];
 }
@@ -15,7 +16,7 @@ export interface Ingredient {
 
 export interface Category{
   name: string;
-  id: string;  
+  id: string;
 }
 
 

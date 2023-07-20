@@ -18,9 +18,9 @@ export class ViewRecipeComponent implements OnInit {
   ngOnInit() {
     var recipeId;
     if (this.route.snapshot.paramMap.get('id')) {
-      recipeId = Number.parseInt(this.route.snapshot.paramMap.get('id') || '-1');
+      recipeId = this.route.snapshot.paramMap.get('id') || '-1';
     } else {
-      recipeId = -1;
+      recipeId = '-1';
     }
 
 

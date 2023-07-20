@@ -17,7 +17,7 @@ export class RecipesListComponent implements OnInit {
 
   constructor(private recipesService: RecipesService) { }
 
-  ngOnInit() {        
+  ngOnInit() {
     this.recipesService.getRecipes().subscribe({
       next: (response) => {
         this.recipes = response.data.items;
@@ -29,17 +29,17 @@ export class RecipesListComponent implements OnInit {
         this.recipes = [];
         this.categories = [];
       }
-    });    
-  }  
+    });
+  }
 
   filterByCategory(category: Category){
     if(this.selectedCategory === category){
       this.selectedCategory = undefined;
     } else{
-      this.selectedCategory = category;  
+      this.selectedCategory = category;
     }
-    
-    console.log("Filtering by Category", this.selectedCategory);    
+
+    console.log("Filtering by Category", this.selectedCategory);
     this.updateFilteredRecipes();
   }
 
@@ -49,8 +49,8 @@ export class RecipesListComponent implements OnInit {
       return;
     }
     var catId = this.selectedCategory.id;
-        
-    this.filteredRecipes = this.recipes.filter(r=>r.category_id===catId);  
+
+    this.filteredRecipes = this.recipes.filter(r=>r.category_id===catId);
     this.filteredRecipes.push({...this.filteredRecipes[0]});
     this.filteredRecipes.push({...this.filteredRecipes[0]});
     this.filteredRecipes.push({...this.filteredRecipes[0]});
@@ -63,6 +63,6 @@ export class RecipesListComponent implements OnInit {
   }
 
   viewRecipe(recipe: Recipe){
-    this.selectedRecipe = recipe;    
+    this.selectedRecipe = recipe;
   }
 }

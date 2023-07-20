@@ -6,11 +6,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecipesListComponent } from './recipes-list/recipes-list.component';
 import { RecipesRoutingModule } from './recipes-routing.module';
 import { ViewRecipeComponent } from './view-recipe/view-recipe.component';
+import { UpsertRecipeComponent } from './upsert-recipe/upsert-recipe.component';
 
 @NgModule({
   declarations: [
     RecipesListComponent,
-    ViewRecipeComponent
+    ViewRecipeComponent,
+    UpsertRecipeComponent
     ],
   imports: [
     CommonModule,
