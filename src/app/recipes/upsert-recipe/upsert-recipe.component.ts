@@ -40,13 +40,16 @@ export class UpsertRecipeComponent implements OnInit {
 
   onSelectRecipe(event: any) {
     // Access the selected value from the event object
-    const selectedRecipeId = event.target.value;
+    const selectedRecipeId = event.target.value;    
+    if(!selectedRecipeId){
+      this.recipeForm.reset();
+      return;
+    }
 
-    const selectedRecipe:Recipe = this.allRecipes.find(recipe => recipe.id === selectedRecipeId);
     this.recipesService.getRecipeById(selectedRecipeId).subscribe({
       next: (recipe=>{
         console.log("Selected Recipe", recipe);
-
+        
         // If a recipe is selected, update the form values with the selected recipe data
         if (recipe) {
           this.recipeForm.patchValue({
@@ -58,8 +61,7 @@ export class UpsertRecipeComponent implements OnInit {
             instructions: recipe.instructions,
             category_id: recipe.category_id
           });
-        } else {
-          // If "Select an existing recipe" option is chosen, reset the form
+        } else {          
           this.recipeForm.reset();
         }
       })

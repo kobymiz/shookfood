@@ -22,12 +22,12 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3">
           <div class="col mb-3" *ngFor="let recipe of filteredRecipes">
             <div class="card">
-              <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" class="card-img-top"
+              <img [src]="recipe.image" class="card-img-top"
                 [alt]="recipe.recipe_name" />
               <div class="card-body">
                 <h5 class="card-title">{{recipe.recipe_name}}</h5>
                 <p class="card-text">{{recipe.description}}</p>
-                <button class="btn btn-primary" (click)="viewRecipe(recipe)">למתכון המלא</button>
+                <a [routerLink]="['/recipes/view/', recipe.id]" class="btn btn-primary">למתכון המלא</a>                
               </div>
             </div>
           </div>

@@ -51,14 +51,7 @@ export class RecipesListComponent implements OnInit {
     var catId = this.selectedCategory.id;
 
     this.filteredRecipes = this.recipes.filter(r=>r.category_id===catId);
-    this.filteredRecipes.push({...this.filteredRecipes[0]});
-    this.filteredRecipes.push({...this.filteredRecipes[0]});
-    this.filteredRecipes.push({...this.filteredRecipes[0]});
-    this.filteredRecipes.push({...this.filteredRecipes[0]});
-    this.filteredRecipes.push({...this.filteredRecipes[0]});
-    this.filteredRecipes.push({...this.filteredRecipes[0]});
-    this.filteredRecipes.push({...this.filteredRecipes[0]});
-    this.filteredRecipes.push({...this.filteredRecipes[0]});
+    
     console.log("Recipes: ", this.filteredRecipes);
   }
 
