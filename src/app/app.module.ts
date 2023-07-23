@@ -21,6 +21,7 @@ import { GalleriesListComponent } from './gallery/galleries-list.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { ClientsFeedbackComponent } from './clients-feedback/clients-feedback.component';
 import { RecipesModule } from './recipes/recipes.module';
+import { VerifyIdentityComponent } from './verify-identity/verify-identity.component';
 
 
 @NgModule({

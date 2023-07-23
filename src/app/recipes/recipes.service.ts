@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
   providedIn: 'root'
 })
 export class RecipesService {
+  private _navigationHelper: RecipeNavigationHelper;
 
   upsertRecipe(recipe: Recipe) {
     if(!recipe.id){
@@ -18,7 +19,13 @@ export class RecipesService {
   }
   private apiURL = "https://ele8bii9tf.execute-api.eu-west-1.amazonaws.com/default";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this._navigationHelper = new RecipeNavigationHelper();
+  }
+
+  get navigationHelper() {
+    return this._navigationHelper;
+  }
 
   getRecipes(): Observable<APIResponse> {
     return this.http.get<APIResponse>(this.apiURL + "/list");
@@ -26,7 +33,7 @@ export class RecipesService {
 
   getRecipeById(id: string): Observable<Recipe> {
     const url = `${this.apiURL}/item?recipeId=${id}`;
-    
+
     return this.http.get<any>(url)
       .pipe(
         map(response => {
@@ -44,4 +51,23 @@ export class RecipesService {
         })
       );
   }
+}
+
+class RecipeNavigationHelper{
+  private openedFromList: boolean = false;
+
+  // Method to set the flag when navigating to ViewRecipe from RecipesList
+  setOpenedFromList(): void {
+    this.openedFromList = true;
+  }
+
+  resetOpenedFromList(): void {
+    this.openedFromList = false;
+  }
+
+  // Method to get the value of the flag
+  isOpenedFromList(): boolean {
+    return this.openedFromList;
+  }
+
 }

@@ -9,9 +9,9 @@
             <p class="card-text text-dark">{{ recipe.description }}</p>
           </div>
         </div>
-        <a href="/recipes/" class="btn btn-primary mt-3"><i class="bi bi-arrow-right me-2"></i> חזרה למתכונים</a>
+        <button class="btn btn-primary mt-3" (click)="goBack()"><i class="bi bi-arrow-right me-2"></i> חזרה למתכונים</button>
       </div>
-  
+
       <div class="col-md-6">
         <div class="card">
           <div class="card-header text-dark">רשימת המרכיבים</div>
@@ -19,27 +19,27 @@
             <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
               <div class="row">
                 <div class="col-4 fw-bold">{{ ingredient.name }}</div>
-                <div class="col-8">{{ ingredient.quantity }} {{ ingredient.unit }}</div>                
-              </div>              
+                <div class="col-8">{{ ingredient.quantity }} {{ ingredient.unit }}</div>
+              </div>
             </li>
           </ul>
         </div>
-  
+
         <div class="card mt-3">
           <div class="card-header text-dark">הוראות ההכנה</div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item" *ngFor="let step of recipe.instructions; let i = index">
               <div class="row">
                 <div class="col-2 fw-bold">שלב {{ i + 1 }}:</div>
-                <div class="col-8">{{ step }}</div>                
-              </div>  
+                <div class="col-8">{{ step }}</div>
+              </div>
             </li>
           </ul>
         </div>
       </div>
     </div>
-    
+
 
 
   </div>
-</section>  
+</section>

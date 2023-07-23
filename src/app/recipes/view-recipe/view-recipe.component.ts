@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecipesService } from '../recipes.service';
 import { Recipe } from '../data-model/recipes-data-model';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-view-recipe',
@@ -9,13 +11,19 @@ import { Recipe } from '../data-model/recipes-data-model';
 })
 export class ViewRecipeComponent implements OnInit {
   recipe: Recipe | undefined;
+  navigateBack: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
+    private location: Location,
+    private router: Router,
     private recipesService: RecipesService
   ) { }
 
   ngOnInit() {
+    this.navigateBack = this.recipesService.navigationHelper.isOpenedFromList();
+    this.recipesService.navigationHelper.resetOpenedFromList();
+
     var recipeId;
     if (this.route.snapshot.paramMap.get('id')) {
       recipeId = this.route.snapshot.paramMap.get('id') || '-1';
@@ -33,5 +41,13 @@ export class ViewRecipeComponent implements OnInit {
         this.recipe = undefined;
       }
     });
+  }
+
+  goBack(): void {
+    if(this.navigateBack){
+      this.location.back();
+    } else{
+      this.router.navigate(['/recipes/list']); // Navigate to /recipes/list
+    }
   }
 }

@@ -401,6 +401,11 @@ hr.divider-light {
   background-color: #fff;
 }
 
+.btn-xs {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
 #mainNav {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   background-color: #fff;
@@ -571,12 +576,12 @@ header.gallery-masthead h1, gallery-header.masthead .h1 {
 }
 
 /* Social Bar */
-.icon-bar { 
-  opacity: 80%;   
+.icon-bar {
+  opacity: 80%;
 }
 
 .icon-bar a {
-  
+
   text-align: center;
   padding: 6px;
   transition: all 0.3s ease;

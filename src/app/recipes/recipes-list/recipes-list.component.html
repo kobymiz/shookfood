@@ -12,9 +12,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item" *ngFor="let cat of categories">
-                  <button class="btn btn-link btn-light" (click)="filterByCategory(cat)"
-                    [ngClass]="{active: selectedCategory===cat}">{{cat.name}}</button>
+                  <a class="btn btn-link btn-light" [routerLink]="['/recipes', 'list']" [queryParams]="{ category: cat.id}" [ngClass]="{active: selectedCategory===cat.id}">{{cat.name}}</a>
                 </li>
+                <a class="btn btn-link btn-light btn-xs mt-2" [routerLink]="['/recipes', 'list']">הצג הכל</a>
               </ul>
             </div>
           </div>
@@ -27,7 +27,7 @@
               <div class="card-body">
                 <h5 class="card-title">{{recipe.recipe_name}}</h5>
                 <p class="card-text">{{recipe.description}}</p>
-                <a [routerLink]="['/recipes/view/', recipe.id]" class="btn btn-primary">למתכון המלא</a>                
+                <a [routerLink]="['/recipes/view/', recipe.id]" class="btn btn-primary"  (click)="onViewRecipeClick(recipe)">למתכון המלא</a>
               </div>
             </div>
           </div>

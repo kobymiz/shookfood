@@ -7,12 +7,14 @@ import { RecipesListComponent } from './recipes-list/recipes-list.component';
 import { RecipesRoutingModule } from './recipes-routing.module';
 import { ViewRecipeComponent } from './view-recipe/view-recipe.component';
 import { UpsertRecipeComponent } from './upsert-recipe/upsert-recipe.component';
+import { VerifyIdentityComponent } from '../verify-identity/verify-identity.component';
 
 @NgModule({
   declarations: [
     RecipesListComponent,
     ViewRecipeComponent,
-    UpsertRecipeComponent
+    UpsertRecipeComponent,
+    VerifyIdentityComponent
     ],
   imports: [
     CommonModule,

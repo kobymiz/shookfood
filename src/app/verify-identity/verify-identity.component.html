@@ -1,0 +1,30 @@
+<!-- The modal backdrop -->
+<!-- <div class="modal-backdrop" *ngIf="showModal"></div> -->
+
+<!-- The modal dialog -->
+<div class="modal-dialog" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Verify Identity</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="hide()"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="verificationForm">
+        <div class="mb-3">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input type="text" class="form-control" id="phoneNumber" formControlName="phoneNumber">
+        </div>
+        <div *ngIf="confirmationCodeSent" class="mb-3">
+          <label for="confirmationCode" class="form-label">Confirmation Code</label>
+          <input type="text" class="form-control" id="confirmationCode" formControlName="confirmationCode">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="hide()">Cancel</button>
+      <button *ngIf="!confirmationCodeSent" type="button" class="btn btn-primary" (click)="sendConfirmationCode()">Send Confirmation Code</button>
+      <button *ngIf="confirmationCodeSent" type="button" class="btn btn-primary" (click)="confirmCode()">Confirm Code</button>
+      <button type="button" class="btn btn-primary" (click)="showCodeField()">I have a code</button>
+    </div>
+  </div>
+</div>

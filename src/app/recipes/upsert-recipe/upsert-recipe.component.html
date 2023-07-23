@@ -4,6 +4,10 @@
       <div class="col-lg-8 align-self-end">
         <h2 class="text-warning font-weight-bold">שוק האוכל של אורן וקובי</h2>
         <h1 class="text-white font-weight-bold">הוספה/עדכון מתכון</h1>
+        <!-- Parent component template -->
+        <button (click)="openVerificationModal()">Verify Identity</button>
+
+        <app-verify-identity #verifyIdentity (verificationCompleted)="onVerificationCompleted($event)"></app-verify-identity>
         <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()" class="text-light mb-5">
           <div class="form-group mb-3">
             <label for="recipe_name">בחירת מתכון:</label>
