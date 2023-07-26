@@ -1,0 +1,46 @@
+<section class="page-section bg-dark text-white" id="portfolio">
+  <div class="container px-4 px-lg-5">
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-6">
+        <div class="card text-dark">
+          <div class="card-header">
+            <h5>טופס הזדהות</h5>            
+          </div>
+          <div class="card-body">
+            <div class="alert alert-success fade-out" *ngIf="showCodeSentMessage">קוד האימות נשלח בהצלחה</div>
+            <div class="alert alert-danger fade-out" *ngIf="sendCodeError"><i class="bi bi-exclamation-triangle-fill"></i> לא ניתן היה לשלוח את קוד האימות</div>
+            <form *ngIf="!isCodeSent">
+              <div class="mb-3">
+                <label for="phoneNumber" class="form-label">נא הזן מספר טלפון לצורך הזדהות</label>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="phoneNumber" required>
+              </div>
+              <div class="d-grid gap-2">
+                <button type="button" class="btn btn-primary" (click)="sendConfirmationCode()" [disabled]="isLoading">
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  שלח קוד אימות</button>                
+              </div>
+            </form>
+            <form *ngIf="isCodeSent" (submit)="verifyCode()">
+              <div class="alert alert-success fade-out" *ngIf="isCodeVerified">הקוד אומת בהצלחה</div>
+              <div class="alert alert-danger fade-out" *ngIf="verifyCodeError"><i class="bi bi-exclamation-triangle-fill"></i> אימות הקוד נכשל</div>
+              <div class="mb-3">
+                <label for="code" class="form-label">נא הזן את קוד האימות שנשלח אלייך</label>
+                <input type="text" class="form-control" id="code" name="code" [(ngModel)]="code" required>
+              </div>
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary" [disabled]="isLoading || isCodeVerified">
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  אימות קוד</button>
+              </div>
+            </form>
+            <div class="text-center mt-3" *ngIf="isCodeVerified">              
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>

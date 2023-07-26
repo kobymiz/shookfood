@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { RecipesListComponent } from './recipes-list/recipes-list.component';
 import { ViewRecipeComponent } from './view-recipe/view-recipe.component';
 import { UpsertRecipeComponent } from './upsert-recipe/upsert-recipe.component';
+import { authGuard } from '../auth-guard';
 
 const routes: Routes = [{
   path: '', redirectTo: '/recipes/list', pathMatch: 'full'
@@ -14,7 +15,8 @@ const routes: Routes = [{
   component: ViewRecipeComponent
 },{
   path: 'upsert',
-  component: UpsertRecipeComponent
+  component: UpsertRecipeComponent,
+  canActivate: [authGuard],
 }];
 
 @NgModule({

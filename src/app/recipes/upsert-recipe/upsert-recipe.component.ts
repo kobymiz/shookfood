@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { Recipe, Ingredient } from '../data-model/recipes-data-model';
 import { RecipesService } from '../recipes.service';
 import { AuthService } from '../../auth.service';
-import { VerifyIdentityComponent } from '../../verify-identity/verify-identity.component';
 
 @Component({
   selector: 'app-recipe-form',
@@ -14,16 +13,13 @@ export class UpsertRecipeComponent implements OnInit {
   categories:any[] = [];
 
   allRecipes: any[] = [];
-
-  @ViewChild('verifyIdentity', { static: false })
-  verifyIdentityComponent: VerifyIdentityComponent;
+  saving: boolean = false;
+  saveSuccess: boolean = false;
+  saveError: boolean = false;
 
   constructor(private fb: FormBuilder,
     private recipesService: RecipesService,
-    private authService: AuthService) {
-      // Initialize the property (if needed)
-    this.verifyIdentityComponent = new VerifyIdentityComponent(this.authService);
-     }
+    private authService: AuthService) {}
 
   ngOnInit() {
     this.recipesService.getRecipes().subscribe({
@@ -178,27 +174,21 @@ export class UpsertRecipeComponent implements OnInit {
       };
       console.log("Upserting Recipe: ", recipe);
 
+      this.saving = true;
       this.recipesService.upsertRecipe(recipe).subscribe({
         next: (response)=>{
+          this.saving = false;
+          this.saveSuccess = true;
+          this.saveError = false;
           console.log("Recipe save response: ", response);
         },
         error:(err)=>{
+          this.saving = false;
+          this.saveError = true;
+          this.saveSuccess = false;
           console.log("Error saving recipe: ", err);
         }
       });
     }
-  }
-
-  openVerificationModal() {
-    // Call the show method of the VerifyIdentity component to display the modal
-    // You can also pass any required data to the VerifyIdentity component
-    // For example, you might pass data related to the user's identity verification status
-    this.verifyIdentityComponent!.show();
-  }
-
-  onVerificationCompleted(result: any) {
-    // This method will be called when the verification is completed in the VerifyIdentity component
-    // The 'result' parameter will be true if the verification was successful
-    // Handle the
-  }
+  }  
 }

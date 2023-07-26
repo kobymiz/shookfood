@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
   templateUrl: './view-recipe.component.html'
 })
 export class ViewRecipeComponent implements OnInit {
-  recipe: Recipe | undefined;
+  recipe: Recipe;
   navigateBack: boolean = false;
 
   constructor(
@@ -37,8 +37,7 @@ export class ViewRecipeComponent implements OnInit {
         this.recipe = recipe;
       },
       error: (error) => {
-        console.error('Error fetching recipe:', error);
-        this.recipe = undefined;
+        console.error('Error fetching recipe:', error);        
       }
     });
   }
