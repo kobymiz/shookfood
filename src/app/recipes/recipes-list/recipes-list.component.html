@@ -21,12 +21,12 @@
         </nav>
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3">
           <div class="col mb-3" *ngFor="let recipe of filteredRecipes">
-            <div class="card">
+            <div class="card recipe-card">
               <img [src]="recipe.image" class="card-img-top"
                 [alt]="recipe.recipe_name" />
               <div class="card-body">
                 <h5 class="card-title">{{recipe.recipe_name}}</h5>
-                <p class="card-text">{{recipe.description}}</p>
+                <p class="card-text description">{{recipe.description}}</p>
                 <a [routerLink]="['/recipes/view/', recipe.id]" class="btn btn-primary"  (click)="onViewRecipeClick(recipe)">למתכון המלא</a>
               </div>
             </div>

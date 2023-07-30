@@ -1,8 +1,10 @@
+import { SubRecipe } from './../data-model/recipes-data-model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { Recipe, Ingredient } from '../data-model/recipes-data-model';
+import { Recipe } from '../data-model/recipes-data-model';
 import { RecipesService } from '../recipes.service';
-import { AuthService } from '../../auth.service';
+// TODO: Check if recipe saves correctly
+// TODO: Update ViewRecipe to support SubRecipes
 
 @Component({
   selector: 'app-recipe-form',
@@ -15,11 +17,11 @@ export class UpsertRecipeComponent implements OnInit {
   allRecipes: any[] = [];
   saving: boolean = false;
   saveSuccess: boolean = false;
-  saveError: boolean = false;
+  saveError: boolean = false;  
+  mode: 'std' | 'complex' = 'std';
 
   constructor(private fb: FormBuilder,
-    private recipesService: RecipesService,
-    private authService: AuthService) {}
+    private recipesService: RecipesService) {}
 
   ngOnInit() {
     this.recipesService.getRecipes().subscribe({
@@ -39,14 +41,19 @@ export class UpsertRecipeComponent implements OnInit {
       recipe_name: ['', Validators.required],
       description: ['', Validators.required],
       category_id: [null, Validators.required], // Use null as the initial value for the dropdown
-      ingredients: this.fb.array([this.createIngredient()]), // Initial ingredient form control
       image: '',
-      instructions: this.fb.array([new FormControl('', Validators.required)])
+      ingredients: this.fb.array([this.createIngredient()]), // Initial ingredient form control      
+      instructions: this.fb.array([new FormControl('', Validators.required)]),
+      subRecipes: this.fb.array([this.createSubRecipe()])
     });
   }
 
   validateAndExtractToken(): void {
 
+  }
+
+  onSelectRecipeType(event: any){
+    this.mode = event.target.value;
   }
 
   onSelectRecipe(event: any) {
@@ -72,42 +79,22 @@ export class UpsertRecipeComponent implements OnInit {
   }
 
   private resetRecipeFormData() {
+    this.mode = 'std';
     this.recipeForm.reset();
-
+    
+    this.subRecipes.clear();
     this.instructions.clear();
     this.ingredients.clear();
 
     this.addInstruction();
     this.addIngredient();
-
   }
 
   private setRecipeFormDataFromExistingRecipe(recipe: Recipe) {
-    //Ensure Instructions form contains the right number of elements
-    if (recipe.instructions.length < this.instructions.length) {
-      const numElementsToAdd = this.instructions.length - recipe.instructions.length;
-      for (let i = 0; i < numElementsToAdd; i++) {
-        this.instructions.removeAt(0); // Remove elements from the beginning of the array
-      }
-    } else if (recipe.instructions.length > this.instructions.length) {
-      const numElementsToAdd = recipe.instructions.length - this.instructions.length;
-      for (let i = 0; i < numElementsToAdd; i++) {
-        this.addInstruction();
-      }
-    }
-
-    //Ensure ingredients form contains the right number of elements
-    if (recipe.ingredients.length < this.ingredients.length) {
-      const numElementsToAdd = this.ingredients.length - recipe.ingredients.length;
-      for (let i = 0; i < numElementsToAdd; i++) {
-        this.ingredients.removeAt(0); // Remove elements from the beginning of the array
-      }
-    } else if (recipe.ingredients.length > this.ingredients.length) {
-      const numElementsToAdd = recipe.ingredients.length - this.ingredients.length;
-      for (let i = 0; i < numElementsToAdd; i++) {
-        this.addIngredient();
-      }
-    }
+    this.mode = recipe.subRecipes && recipe.subRecipes.length > 0 ? 'complex' : 'std';
+        
+    this.alignFormArrayLength(recipe.instructions, this.instructions, ()=>{this.addInstruction()});
+    this.alignFormArrayLength(recipe.ingredients, this.ingredients, ()=>{this.addIngredient()});        
 
     this.recipeForm.patchValue({
       recipe_name: recipe.recipe_name,
@@ -118,11 +105,47 @@ export class UpsertRecipeComponent implements OnInit {
       instructions: recipe.instructions,
       category_id: recipe.category_id
     });
+    
+    if(recipe.subRecipes && recipe.subRecipes.length >0){
+      this.alignFormArrayLength(recipe.subRecipes, this.subRecipes, ()=>{this.addSubRecipe()});
+      recipe.subRecipes.forEach((sr, index)=>{
+        var formSubRecipe = this.subRecipes[index];
+        this.alignFormArrayLength(sr.ingredients, this.srIngredients(formSubRecipe), ()=>{this.addSubIngredient(formSubRecipe)});
+        this.alignFormArrayLength(sr.instructions, this.srInstructions(formSubRecipe), ()=>{this.addSubInstruction(formSubRecipe)});        
+        formSubRecipe.patchValue({
+          name: sr.name,
+          ingredients: sr.ingredients,
+          instructions: sr.instructions
+        })
+      });
+      
+    }
+  }
+
+  private alignFormArrayLength(itemsArray: any[], formArray: FormArray, additemsCallback: any){
+    if (itemsArray.length < formArray.length) {
+      const numElementsToAdd = formArray.length - itemsArray.length;
+      for (let i = 0; i < numElementsToAdd; i++) {
+        formArray.removeAt(0); // Remove elements from the beginning of the array
+      }
+    } else if (itemsArray.length > formArray.length) {
+      const numElementsToAdd = itemsArray.length - formArray.length;
+      for (let i = 0; i < numElementsToAdd; i++) {
+        additemsCallback();
+      }
+    }
   }
 
   // Convenience getter for easy access to form controls
   get f() {
     return this.recipeForm.controls;
+  }
+
+  srIngredients(subr){
+    return subr.get('ingredients') as FormArray;
+  }
+  srInstructions(subr){
+    return subr.get('instructions') as FormArray;
   }
 
   get ingredients() {
@@ -131,6 +154,10 @@ export class UpsertRecipeComponent implements OnInit {
 
   get instructions() {
     return this.recipeForm.get('instructions') as FormArray;
+  }
+
+  get subRecipes() {
+    return this.recipeForm.get('subRecipes') as FormArray;
   }
 
   createIngredient(): FormGroup {
@@ -149,6 +176,14 @@ export class UpsertRecipeComponent implements OnInit {
     this.ingredients.removeAt(index);
   }
 
+  addSubIngredient(subr) {
+    this.srIngredients(subr).push(this.createIngredient());
+  }
+
+  removeSubIngredient(subr, index: number) {
+    this.srIngredients(subr).removeAt(index);
+  }
+
   addInstruction() {
     this.instructions.push(new FormControl('', Validators.required));
   }
@@ -156,8 +191,33 @@ export class UpsertRecipeComponent implements OnInit {
   removeInstruction(index: number) {
     this.instructions.removeAt(index);
   }
+
   castInstructionToFormControl(obj:any){
     return obj as FormControl;
+  }
+
+  addSubInstruction(subr) {
+    this.srInstructions(subr).push(new FormControl('', Validators.required));
+  }
+
+  removeSubInstruction(subr, index: number) {
+    this.srInstructions(subr).removeAt(index);
+  }
+
+  createSubRecipe(): FormGroup {
+    return this.fb.group({      
+      name: ['', Validators.required],      
+      ingredients: this.fb.array([this.createIngredient()]),
+      instructions: this.fb.array([new FormControl('', Validators.required)]),      
+    });
+  }
+
+  addSubRecipe() {
+    this.subRecipes.push(this.createSubRecipe());
+  }
+
+  removeSubRecipe(index: number) {
+    this.subRecipes.removeAt(index);
   }
 
   onSubmit() {
@@ -170,8 +230,17 @@ export class UpsertRecipeComponent implements OnInit {
         category_id: formData.category_id,
         ingredients: formData.ingredients,
         image: formData.image,
-        instructions: formData.instructions
+        instructions: formData.instructions,
+        subRecipes: formData.subRecipes
       };
+
+      if(this.mode == 'std'){
+        recipe.subRecipes = [];
+      } else {
+        recipe.instructions = [];
+        recipe.ingredients = [];
+      }
+
       console.log("Upserting Recipe: ", recipe);
 
       this.saving = true;

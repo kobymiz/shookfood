@@ -6,6 +6,13 @@ export interface Recipe {
   image: string;
   ingredients: Ingredient[];
   instructions: string[];
+  subRecipes?: SubRecipe[]
+}
+
+export interface SubRecipe {  
+  name: string;      
+  ingredients: Ingredient[];
+  instructions: string[];
 }
 
 export interface Ingredient {
