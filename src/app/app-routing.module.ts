@@ -7,7 +7,7 @@ import { AuthFormComponent } from './auth-form/auth-form.component';
 const routes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'login', component: AuthFormComponent},
-  
+
   {path: 'gallery/:gallery', component: GalleryComponent},
   {
     path: 'booking',
@@ -22,6 +22,10 @@ const routes: Routes = [
     data: {
       title: 'Recipes'
     }
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
   }
 ];
 
