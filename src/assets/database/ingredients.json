@@ -1,0 +1,38 @@
+[
+  {
+    "name": "עגבניות שרי",
+    "units": "סלסילה",
+    "quantity": "1",
+    "department": "ירקות ופירות"
+  },
+  {
+    "name": "מלפפון",
+    "units": "יחידה",
+    "quantity": "1",
+    "department": "ירקות ופירות"
+  },
+  {
+    "name": "בצל",
+    "units": "יחידה",
+    "quantity": "1",
+    "department": "ירקות ופירות"
+  },
+  {
+    "name": "בצל סגול",
+    "units": "יחידה",
+    "quantity": "1",
+    "department": "ירקות ופירות"
+  },
+  {
+    "name": "בזיליקום",
+    "units": "יחידה",
+    "quantity": "1",
+    "department": "ירקות ופירות"
+  },
+  {
+    "name": "טימין",
+    "units": "יחידה",
+    "quantity": "1",
+    "department": "ירקות ופירות"
+  }
+]
