@@ -6,10 +6,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
 import { UpsertMenuItemComponent } from './menu-admin/upsert-menu-item/upsert-menu-item.component';
 import { SharedModule } from '../shared.module';
+import { MenuBuilderComponent } from './menu-admin/menu-builder/menu-builder.component';
 
 @NgModule({
   declarations: [
-    UpsertMenuItemComponent
+    UpsertMenuItemComponent,
+    MenuBuilderComponent
   ],
   imports: [
     CommonModule,

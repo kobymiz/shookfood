@@ -7,11 +7,12 @@ import { ConfigData, MenuIngredient, MenuItem } from '../menu.data-model';
   providedIn: 'root'
 })
 export class MenuService {
-  private databaseURL = 'assets/database';
-  private DBNames = {
-    config: 'config.json',
-    menuItems: 'menu-items.json',
-    ingredients: 'ingredients.json'
+
+  private apiURL = 'https://st8srdg94j.execute-api.eu-west-1.amazonaws.com/default';
+  private apiendpoints = {
+    config: 'config',
+    menuItems: 'menuitem',
+    ingredients: 'ingredientscatalog'
   }
 
   private config: ConfigData;
@@ -25,9 +26,10 @@ export class MenuService {
     if(this.menuItems){
       return of(this.menuItems);
     } else{
-      return this.http.get<any>(`${this.databaseURL}/${this.DBNames.menuItems}`).pipe(tap(data=>{
-        console.log("Menu Items database loaded");
-        this.menuItems = data;
+      return this.http.get<any>(`${this.apiURL}/${this.apiendpoints.menuItems}`).pipe(map(response=>{
+        console.log("Menu Items database loaded: ", response);
+        this.menuItems = response.data;
+        return response.data;
       }), catchError(error => {
         console.error('Error loading menu items:', error);
         this.menuItems = [];
@@ -38,12 +40,12 @@ export class MenuService {
 
   getIngredients(): Observable<MenuIngredient[]>{
     if(this.ingredients == undefined){
-      return this.http.get<MenuIngredient[]>(`${this.databaseURL}/${this.DBNames.ingredients}`)
+      return this.http.get<any>(`${this.apiURL}/${this.apiendpoints.ingredients}`)
       .pipe(
-        tap(response=>{
+        map(response=>{
           console.log("Ingredients loaded: ", response);
-          this.ingredients = response
-          return response;
+          this.ingredients = response.data
+          return response.data;
         }),
         catchError(error => {
           console.error('Error loading ingredients.json:', error);
@@ -55,14 +57,13 @@ export class MenuService {
     }
   }
 
-  getConfigData(): Observable<ConfigData> {
+  getConfigData(key): Observable<any> {
     if(this.config == undefined){
-      return this.http.get<ConfigData>(`${this.databaseURL}/${this.DBNames.config}`)
+      return this.http.get<any>(`${this.apiURL}/${this.apiendpoints.config}?key=${key}`)
       .pipe(
-        tap(response=>{
+        map(response=>{
           console.log("Config data loaded: ", response);
-          this.config = response
-          return response;
+          return response.data;
         }),
         catchError(error => {
           console.error('Error loading config.json:', error);
@@ -70,8 +71,24 @@ export class MenuService {
         })
       );
     } else{
-      return of(this.config);
+      return of(undefined);
     }
   }
 
+  upsertMenuItem(menuItem: MenuItem):Observable<boolean> {
+    return this.http.post<any>(`${this.apiURL}/${this.apiendpoints.menuItems}`, menuItem).pipe(
+      map(response=>{
+        if(response.status == 0){
+          console.log("Save item success: ", response);
+          return true;
+        }
+        console.log("Error saving item: ", response);
+        return false
+      }),
+      catchError(error => {
+        console.error('Error saving item:', error);
+        return []
+      })
+    )
+  }
 }

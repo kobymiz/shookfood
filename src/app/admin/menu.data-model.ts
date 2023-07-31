@@ -12,11 +12,14 @@ export interface MenuIngredient{
 }
 
 export interface Menu {
+  name: string
+  eventDate: Date
+  guests: number
   items: MenuItem[]
+  shoppingList: ShoppingList
 }
 
 export interface ShoppingList{
-  eventDate: Date,
   items: ShoppingListItem[]
 }
 
@@ -26,6 +29,7 @@ export interface ShoppingListItem{
   unit: string
   buyer: string
   department: string
+  comments: string
 }
 
 export interface ConfigData {

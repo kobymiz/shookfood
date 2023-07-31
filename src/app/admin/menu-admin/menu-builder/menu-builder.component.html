@@ -1,0 +1,104 @@
+<section class="page-section bg-dark" id="portfolio">
+  <div class="container px-4 px-lg-5">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary">
+            <h2 class="text-white font-weight-bold">בניית תפריט אירוע</h2>
+          </div>
+          <div class="card-body">
+            <div class="overlay" *ngIf="saving">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+            <div class="alert alert-success" *ngIf="saveSuccess">התפריט נוצר/עודכן בהצלחה</div>
+            <div class="alert alert-danger" *ngIf="saveError">אירעה שגיאה בזמן שמירת התפריט</div>
+            <form [formGroup]="menuForm" (ngSubmit)="onSubmit()" class="mb-5">
+              <!-- <div class="form-group mb-3">
+                <label for="recipe_name">בחירת מתכון:</label>
+                <select class="form-control" (change)="onSelectRecipe($event)">
+                  <option value="" selected>מתכון חדש</option>
+                  <option *ngFor="let recipe of allRecipes" [value]="recipe.name">{{ recipe.name }}</option>
+                </select>
+              </div> -->
+              <div class="form-group mb-3">
+                <label for="name">שם אירוע:</label>
+                <input type="text" formControlName="name" class="form-control" id="name">
+              </div>
+              <div class="form-group mb-3">
+                <label for="eventDate">תאריך האירוע:</label>
+                <input type="text" formControlName="eventDate" class="form-control" id="eventdate">
+              </div>
+              <div class="form-group mb-3">
+                <label for="eventDate">כמות אורחים:</label>
+                <input type="number" formControlName="guests" class="form-control" id="guests">
+              </div>
+              <hr />
+              <div>
+                <h5>מנות לבחירה</h5>
+                <ul class="list-group">
+                  <li class="list-group-item " [ngClass]="{'list-group-item-secondary': even}" *ngFor="let category of allItems; let even=even">
+                    <p class="fw-bold">{{category.name}}</p>
+                    <div class="d-flex flex-wrap">
+                      <button type="button" class="btn btn-sm me-2 mb-2" (click)="onSelectItem(category, item)" [ngClass]="category.colorClass" *ngFor="let item of category.items">{{item.name}} <i class="bi bi-plus ms-2"></i></button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <hr />
+
+              <div>
+                <h5>תפריט אירוע <button type="button" class="btn btn-success btn-sm" (click)="buildShoppingList()">בנה רשימת קניות</button></h5>
+                <ul class="list-group">
+                  <li class="list-group-item " [ngClass]="{'list-group-item-secondary': even}" *ngFor="let category of itemsArray; let even=even">
+                    <p class="fw-bold">{{category.name}}</p>
+                    <div class="d-flex flex-wrap">
+                      <button type="button" class="btn btn-sm me-2 mb-2" (click)="onRemoveItem(category, item)" [ngClass]="category.colorClass" *ngFor="let item of category.items">{{item.name}} <i class="bi bi-trash ms-2"></i></button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <hr />
+
+              <div>
+                <h5>רשימת קניות</h5>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>מצרך</th>
+                      <th>מחלקה</th>
+                      <th>כמות</th>
+                      <th>יחידות</th>
+                      <th>מי קונה</th>
+                      <th>הערות</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of shoppingList.items">
+                      <td>{{item.name}}</td>
+                      <td>{{item.department}}</td>
+                      <td>{{item.quantity}}</td>
+                      <td>{{item.unit}}</td>
+                      <td>{{item.buyer}}</td>
+                      <td>{{item.comments}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <hr />
+              <div class="text-center">
+                <div class="alert alert-success" *ngIf="saveSuccess">המתכון נוצר/עודכן בהצלחה</div>
+                <div class="alert alert-danger" *ngIf="saveError">אירעה שגיאה בזמן שמירת המתכון</div>
+                <button type="submit" class="btn btn-success mt-5">
+                  <span class="bi bi-save"></span>&nbsp;שמירה
+                  <span *ngIf="saving"  class="spinner-border spinner-border-sm"></span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

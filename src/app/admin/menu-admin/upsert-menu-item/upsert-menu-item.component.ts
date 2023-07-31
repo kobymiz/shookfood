@@ -24,15 +24,15 @@ export class UpsertMenuItemComponent implements OnInit {
 
   ngOnInit() {
     var items$ = this.menuService.getItems();
-    var config$ = this.menuService.getConfigData();
+    var categories$ = this.menuService.getConfigData('menuCategories');
     var ingredientsCatalog$ = this.menuService.getIngredients();
 
-    combineLatest([items$, config$, ingredientsCatalog$]).subscribe({
-      next: ([items, config, ingredientsCatalog])=>{
+    combineLatest([items$, categories$, ingredientsCatalog$]).subscribe({
+      next: ([items, categories, ingredientsCatalog])=>{
         console.log("Items: ", items);
-        console.log("Config: ", config);
+        console.log("Config: ", categories);
         console.log("ingredients: ", ingredientsCatalog);
-        this.categories = config.categories;
+        this.categories = categories;
         this.allRecipes = items;
         this.ingredientsCatalog = [...this.ingredientsCatalog, ...ingredientsCatalog];
       },
@@ -42,11 +42,10 @@ export class UpsertMenuItemComponent implements OnInit {
         this.categories = [];
         this.ingredientsCatalog = []
       }
-    })
+    });
 
     this.menuItemForm = this.fb.group({
       name: ['', Validators.required],
-      description: ['', Validators.required],
       category: [null, Validators.required], // Use null as the initial value for the dropdown
       ingredients: this.fb.array([this.createIngredient()]), // Initial ingredient form control
     });
@@ -60,18 +59,14 @@ export class UpsertMenuItemComponent implements OnInit {
       return;
     }
 
-    // this.menuService.getRecipeByName(selectedRecipeName).subscribe({
-    //   next: (recipe=>{
-    //     console.log("Selected Recipe", recipe);
+    var recipe = this.allRecipes.find(r=>r.name==selectedRecipeName);
 
-    //     // If a recipe is selected, update the form values with the selected recipe data
-    //     if (recipe) {
-    //       this.setRecipeFormDataFromExistingRecipe(recipe);
-    //     } else {
-    //       this.resetRecipeFormData();
-    //     }
-    //   })
-    // });
+    if (recipe) {
+      this.setRecipeFormDataFromExistingRecipe(recipe);
+    } else {
+      this.resetRecipeFormData();
+    }
+
   }
 
   private resetRecipeFormData() {
@@ -128,7 +123,11 @@ export class UpsertMenuItemComponent implements OnInit {
 
   onSubmit() {
     if (this.menuItemForm.valid) {
-      const formData = this.menuItemForm.value;
+      console.log("Form is not valid");
+      return;
+    }
+
+    const formData = this.menuItemForm.value;
       const menuItem: MenuItem = {
         name: formData.name,
         category: formData.category,
@@ -137,21 +136,20 @@ export class UpsertMenuItemComponent implements OnInit {
       console.log("Upserting MenuItem: ", menuItem);
 
       this.saving = true;
-      // this.menuService.upsertRecipe(menuItem).subscribe({
-      //   next: (response)=>{
-      //     this.saving = false;
-      //     this.saveSuccess = true;
-      //     this.saveError = false;
-      //     console.log("Menu Item save response: ", response);
-      //   },
-      //   error:(err)=>{
-      //     this.saving = false;
-      //     this.saveError = true;
-      //     this.saveSuccess = false;
-      //     console.log("Error saving menu item: ", err);
-      //   }
-      // });
-    }
+      this.menuService.upsertMenuItem(menuItem).subscribe({
+        next: (response)=>{
+          this.saving = false;
+          this.saveSuccess = true;
+          this.saveError = false;
+          console.log("Menu Item save response: ", response);
+        },
+        error:(err)=>{
+          this.saving = false;
+          this.saveError = true;
+          this.saveSuccess = false;
+          console.log("Error saving menu item: ", err);
+        }
+      });
   }
 
   searchFormatter = (result: MenuIngredient) => `${result.name} | ${result.units} | ${result.department}`;
