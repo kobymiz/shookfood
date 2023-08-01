@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { MenuIngredient, MenuItem } from '../../menu.data-model';
+import { IngredientCatalogItem, MenuIngredient, MenuItem } from '../../menu.data-model';
 import { MenuService } from '../menu.service';
 import { combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { Observable, OperatorFunction } from 'rxjs';
@@ -12,7 +12,7 @@ import { Observable, OperatorFunction } from 'rxjs';
 export class UpsertMenuItemComponent implements OnInit {
   menuItemForm!: FormGroup;
   categories:string[] = [];
-  ingredientsCatalog: MenuIngredient[] = [];
+  ingredientsCatalog: IngredientCatalogItem[] = [];
 
   allRecipes: any[] = [];
   saving: boolean = false;
@@ -155,7 +155,7 @@ export class UpsertMenuItemComponent implements OnInit {
   searchFormatter = (result: MenuIngredient) => `${result.name} | ${result.units} | ${result.department}`;
   displayFormatter = (result: MenuIngredient) => result.name;
 
-  search : OperatorFunction<string, readonly MenuIngredient[]> = (text$: Observable<string>) =>
+  search : OperatorFunction<string, readonly IngredientCatalogItem[]> = (text$: Observable<string>) =>
 		text$.pipe(
 			debounceTime(200),
 			distinctUntilChanged(),

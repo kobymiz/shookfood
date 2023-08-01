@@ -11,6 +11,11 @@ export interface MenuIngredient{
   department: string
 }
 
+export interface IngredientCatalogItem{
+  name: string
+  department: string
+}
+
 export interface Menu {
   name: string
   eventDate: Date

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { Menu, MenuItem, ShoppingList } from '../../menu.data-model';
+import { IngredientCatalogItem, Menu, MenuItem, ShoppingList } from '../../menu.data-model';
 import { MenuService } from '../menu.service';
 import { combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { Observable, OperatorFunction } from 'rxjs';
@@ -21,6 +21,7 @@ export class MenuBuilderComponent implements OnInit {
   saving: boolean = false;
   saveSuccess: boolean = false;
   saveError: boolean = false;
+  ingredientsCatalog: IngredientCatalogItem[];
 
   constructor(private fb: FormBuilder,
     private menuService: MenuService) {}
@@ -28,12 +29,15 @@ export class MenuBuilderComponent implements OnInit {
   ngOnInit() {
     var items$ = this.menuService.getItems();
     var categories$ = this.menuService.getConfigData('menuCategories');
+    var ingredients$ = this.menuService.getIngredients();
 
-    combineLatest([items$, categories$]).subscribe({
-      next: ([items, categories])=>{
+    combineLatest([items$, categories$, ingredients$]).subscribe({
+      next: ([items, categories, ingredients])=>{
         console.log("Items: ", items);
         this.createMenuSelection(items);
         this.categories = categories;
+        this.ingredientsCatalog = ingredients;
+        console.log("ingredientsCatalog: ", ingredients);
       },
       error: (error)=>{
         console.log("Error occured: ", error);
@@ -86,18 +90,19 @@ export class MenuBuilderComponent implements OnInit {
       category.items.forEach(item=>{
         item.ingredients.forEach(ingr=>{
           var slItem = this.shoppingList.items.find(it=>it.name===ingr.name);
+          var ici = this.ingredientsCatalog.find(it=>it.name === ingr.name) || {name:ingr.name, department: ingr.department};
           if(!slItem){
             slItem = {
               buyer: '',
               comments: '',
-              department: ingr.department,
+              department: ici.department || '-',
               name: ingr.name,
               quantity: 0,
               unit: ingr.unit
             }
+            this.shoppingList.items.push(slItem);
           }
 
-          this.shoppingList.items.push(slItem);
           slItem.quantity += (ingr.quantity * qtyFactor);
           if(slItem.comments.length > 0){
             slItem.comments += `, ${item.name}`;
@@ -107,6 +112,8 @@ export class MenuBuilderComponent implements OnInit {
         })
       })
     });
+
+    this.shoppingList.items.sort((a,b)=>a.department+a.name > b.department+b.name ? 1 : (a.department+a.name < b.department+b.name ? -1:0))
   }
 
   onSubmit() {

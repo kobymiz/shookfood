@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
-import { ConfigData, MenuIngredient, MenuItem } from '../menu.data-model';
+import { ConfigData, IngredientCatalogItem, MenuIngredient, MenuItem } from '../menu.data-model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class MenuService {
 
   private config: ConfigData;
   private menuItems: MenuItem[];
-  private ingredients: MenuIngredient[];
+  private ingredients: IngredientCatalogItem[];
 
   constructor(private http: HttpClient) {
   }
@@ -38,7 +38,7 @@ export class MenuService {
     }
   }
 
-  getIngredients(): Observable<MenuIngredient[]>{
+  getIngredients(): Observable<IngredientCatalogItem[]>{
     if(this.ingredients == undefined){
       return this.http.get<any>(`${this.apiURL}/${this.apiendpoints.ingredients}`)
       .pipe(
