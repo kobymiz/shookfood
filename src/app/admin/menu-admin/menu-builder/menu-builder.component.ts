@@ -25,6 +25,8 @@ export class MenuBuilderComponent implements OnInit {
   saveError: boolean = false;
   ingredientsCatalog: IngredientCatalogItem[];
   buyers: string[] = [];
+  menus: Menu[] = [];
+  downloading: boolean;
 
   constructor(private fb: FormBuilder,
     private menuService: MenuService,
@@ -35,15 +37,16 @@ export class MenuBuilderComponent implements OnInit {
     var categories$ = this.menuService.getConfigData('menuCategories');
     var ingredients$ = this.menuService.getIngredients();
     var buyers$ = this.menuService.getConfigData("buyers");
+    var menus$ = this.menuService.getMenus();
 
-    combineLatest([items$, categories$, ingredients$, buyers$]).subscribe({
-      next: ([items, categories, ingredients, buyers])=>{
+    combineLatest([items$, categories$, ingredients$, buyers$, menus$]).subscribe({
+      next: ([items, categories, ingredients, buyers,menus])=>{
         console.log("Items: ", items);
         this.createMenuSelection(items);
         this.categories = categories;
         this.ingredientsCatalog = ingredients;
         this.buyers = buyers;
-        console.log("Buyers: ", this.buyers);
+        this.menus = menus;        
       },
       error: (error)=>{
         console.log("Error occured: ", error);
@@ -53,13 +56,66 @@ export class MenuBuilderComponent implements OnInit {
     });
 
     this.menuForm = this.fb.group({
-      name: ['', Validators.required],
+      eventName: ['', Validators.required],
       eventDate: ['', Validators.required],
       adultGuests: [10, Validators.required],
       childGuests: [2, Validators.required],
-      items: [[], Validators.required],
-      shoppingList: this.fb.array([]),
+      items: [[], Validators.required]      
     });
+  }
+
+  onSelectMenu(event){
+    // Access the selected value from the event object
+    const selectedMenu = event.target.value;
+    if (!selectedMenu) {
+      this.resetMenuFormData();
+      return;
+    }
+
+    var menu = this.menus.find(m => m.eventName + ' | ' + m.eventDate == selectedMenu);
+
+    if (menu) {
+      this.setMenuFormData(menu);
+    } else {
+      this.resetMenuFormData();
+    }
+  }
+  
+  private setMenuFormData(menu: Menu) {
+    console.log("Set mene Form: ", menu);
+    
+    this.menuForm.patchValue({
+      eventName: menu.eventName,
+      eventDate: menu.eventDate,
+      childGuests: menu.childGuests,
+      adultGuests: menu.adultGuests,      
+      items: menu.items
+    });
+    this.shoppingList = {
+      items: [...menu.shoppingList.items]
+    };
+    
+    // Remove items from main menu
+    menu.items.forEach(cat=>{   
+      var category = this.allItems.find(c=>c.name==cat.name);
+      cat.items.forEach(item=>{        
+        var index = category.items.findIndex(it=>it.name===item.name);        
+        category.items.splice(index, 1);
+      });
+    });    
+  }
+
+  private resetMenuFormData() {
+    // Add items to main menu
+    this.itemsArray.forEach(cat=>{   
+      var category = this.allItems.find(c=>c.name==cat.name);
+      cat.items.forEach(item=>{        
+        category.items.push(item);
+      });
+    });
+
+    this.menuForm.reset();    
+    this.shoppingList.items = []
   }
 
   get itemsArray(){
@@ -129,36 +185,37 @@ export class MenuBuilderComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.menuForm.valid) {
+    if (!this.menuForm.valid) {
       console.log("Form is not valid");
       return;
     }
 
     const formData = this.menuForm.value;
       const menu: Menu = {
-        name: formData.name,
+        eventName: formData.eventName,
         eventDate: formData.eventDate,
-        guests: formData.guests,
+        adultGuests: formData.adultGuests,
+        childGuests: formData.childGuests,
         items: formData.items,
         shoppingList: this.shoppingList
       };
-      console.log("Upserting MenuItem: ", menu);
+      console.log("Upserting Menu: ", menu);
 
       this.saving = true;
-      // this.menuService.upsertMenu(menu).subscribe({
-      //   next: (response)=>{
-      //     this.saving = false;
-      //     this.saveSuccess = true;
-      //     this.saveError = false;
-      //     console.log("Menu Item save response: ", response);
-      //   },
-      //   error:(err)=>{
-      //     this.saving = false;
-      //     this.saveError = true;
-      //     this.saveSuccess = false;
-      //     console.log("Error saving menu item: ", err);
-      //   }
-      // });
+      this.menuService.upsertMenu(menu).subscribe({
+        next: (response)=>{
+          this.saving = false;
+          this.saveSuccess = true;
+          this.saveError = false;
+          console.log("Menu save response: ", response);
+        },
+        error:(err)=>{
+          this.saving = false;
+          this.saveError = true;
+          this.saveSuccess = false;
+          console.log("Error saving menu: ", err);
+        }
+      });
   }
 
   private createMenuSelection(menuItems){
@@ -203,6 +260,16 @@ export class MenuBuilderComponent implements OnInit {
   }
 
   downloadShoppingList(){
-    this.downloadService.downloadExcel(this.shoppingListTable.nativeElement)
+    this.downloading = true;
+    try{
+      var formData = this.menuForm.value;
+      this.downloadService.downloadExcel(this.shoppingListTable.nativeElement, "רשימת קניות", `${formData.name ||'שם אירוע'}-${formData.eventDate || 'תאריך'}.רשימת קניות`);
+      this.downloading = false;
+    } catch(err){
+      console.log("Error downloading file...", err);
+      this.downloading = false;
+    }
+    
+    
   }
 }

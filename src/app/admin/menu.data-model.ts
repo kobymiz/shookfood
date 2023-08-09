@@ -18,10 +18,11 @@ export interface IngredientCatalogItem{
 }
 
 export interface Menu {
-  name: string
+  eventName: string
   eventDate: Date
-  guests: number
-  items: MenuItem[]
+  childGuests: number
+  adultGuests: number
+  items: {name: string, colorClass: string, items:MenuItem[]}[] 
   shoppingList: ShoppingList
 }
 

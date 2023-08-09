@@ -11,6 +11,7 @@ export class MenuService {
   private apiURL = 'https://st8srdg94j.execute-api.eu-west-1.amazonaws.com/default';
   private apiendpoints = {
     config: 'config',
+    menu: 'menu',
     menuItems: 'menuitem',
     ingredients: 'ingredientscatalog'
   }
@@ -36,6 +37,16 @@ export class MenuService {
         return [];
       }));
     }
+  }
+
+  getMenus() : Observable<Menu[]> {
+    return this.http.get<any>(`${this.apiURL}/${this.apiendpoints.menu}`).pipe(map(response=>{
+      console.log("Menus loaded: ", response);        
+      return response.data;
+    }), catchError(error => {
+      console.error('Error loading menu items:', error);        
+      return [];
+    }));
   }
 
   getIngredients(): Observable<IngredientCatalogItem[]>{
@@ -88,6 +99,23 @@ export class MenuService {
       catchError(error => {
         console.error('Error saving item:', error);
         return []
+      })
+    )
+  }
+
+  upsertMenu(menu: Menu):Observable<boolean> {
+    return this.http.post<any>(`${this.apiURL}/${this.apiendpoints.menu}`, menu).pipe(
+      map(response=>{
+        if(response.status == 0){
+          console.log("Save item success: ", response);
+          return true;
+        }
+        console.log("Error saving item: ", response);
+        return false
+      }),
+      catchError(error => {
+        console.error('Error saving item:', error);
+        return of(false);
       })
     )
   }

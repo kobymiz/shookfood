@@ -15,16 +15,16 @@
             <div class="alert alert-success" *ngIf="saveSuccess">התפריט נוצר/עודכן בהצלחה</div>
             <div class="alert alert-danger" *ngIf="saveError">אירעה שגיאה בזמן שמירת התפריט</div>
             <form [formGroup]="menuForm" (ngSubmit)="onSubmit()" class="mb-5">
-              <!-- <div class="form-group mb-3">
-                <label for="recipe_name">בחירת מתכון:</label>
-                <select class="form-control" (change)="onSelectRecipe($event)">
-                  <option value="" selected>מתכון חדש</option>
-                  <option *ngFor="let recipe of allRecipes" [value]="recipe.name">{{ recipe.name }}</option>
+              <div class="form-group mb-3">
+                <label for="recipe_name">בחירת תפריט:</label>
+                <select class="form-control" (change)="onSelectMenu($event)">
+                  <option value="" selected>תפריט חדש</option>
+                  <option *ngFor="let menu of menus" [value]="menu.eventName + ' | ' + menu.eventDate">{{ menu.eventName + ' | ' + menu.eventDate }}</option>
                 </select>
-              </div> -->
+              </div>
               <div class="form-group mb-3">
                 <label for="name">שם אירוע:</label>
-                <input type="text" formControlName="name" class="form-control" id="name">
+                <input type="text" formControlName="eventName" class="form-control" id="name">
               </div>
               <div class="form-group mb-3">
                 <label for="eventDate">תאריך האירוע:</label>
@@ -39,10 +39,7 @@
                 <div class="input-group w-25">
                   <input type="number" class="form-control" id="childGuests" formControlName="childGuests" min="0" max="999">
                   <span class="input-group-text  w-75">ילדים (5-12)</span>
-                </div>
-
-                <!--<label for="eventDate">כמות אורחים:</label>
-                <input type="number" formControlName="guests" class="form-control" id="guests">-->
+                </div>                
               </div>
               <hr />
               <div>
@@ -89,8 +86,11 @@
                 <h5 class="d-flex justify-content-between">
                   <span>רשימת קניות</span>
                   <div>
-                    <button type="button" class="btn btn-sm btn-success" (click)="addManulItemToShoppingList()"><i class="bi bi-plus"></i> הוסף פריט לרשימה</button>
-                    <button type="button" class="btn btn-sm btn-warning" (click)="downloadShoppingList()">הורד רשימת קניות</button>
+                    <button type="button" class="btn btn-sm btn-success me-2" (click)="addManulItemToShoppingList()"><i class="bi bi-plus"></i> הוסף פריט לרשימה</button>
+                    <button type="button" class="btn btn-sm btn-warning" (click)="downloadShoppingList()">
+                      הורד רשימת קניות
+                      <span *ngIf="downloading"  class="spinner-border spinner-border-sm"></span>
+                    </button>
                   </div>
 
                 </h5>
@@ -126,9 +126,9 @@
               </div>
               <hr />
               <div class="text-center">
-                <div class="alert alert-success" *ngIf="saveSuccess">המתכון נוצר/עודכן בהצלחה</div>
-                <div class="alert alert-danger" *ngIf="saveError">אירעה שגיאה בזמן שמירת המתכון</div>
-                <button type="submit" class="btn btn-success mt-5">
+                <div class="alert alert-success" *ngIf="saveSuccess">התפריט נוצר/עודכן בהצלחה</div>
+                <div class="alert alert-danger" *ngIf="saveError">אירעה שגיאה בזמן שמירת התפריט</div>
+                <button type="button" class="btn btn-success mt-5" (click)="onSubmit()">
                   <span class="bi bi-save"></span>&nbsp;שמירה
                   <span *ngIf="saving"  class="spinner-border spinner-border-sm"></span>
                 </button>
