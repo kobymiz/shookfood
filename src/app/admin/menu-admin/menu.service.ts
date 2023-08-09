@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
-import { ConfigData, IngredientCatalogItem, MenuIngredient, MenuItem } from '../menu.data-model';
+import { ConfigData, IngredientCatalogItem, Menu, MenuIngredient, MenuItem } from '../menu.data-model';
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +88,23 @@ export class MenuService {
       catchError(error => {
         console.error('Error saving item:', error);
         return []
+      })
+    )
+  }
+
+  upsertIngredientsCatalog(items: IngredientCatalogItem[]) {
+    return this.http.post<any>(`${this.apiURL}/${this.apiendpoints.ingredients}`, {items}).pipe(
+      map(response=>{
+        if(response.statusCode == 200){
+          console.log("Save item success: ", response);
+          return true;
+        }
+        console.log("Error saving item: ", response);
+        return false
+      }),
+      catchError(error => {
+        console.error('Error saving item:', error);
+        return of(false);
       })
     )
   }

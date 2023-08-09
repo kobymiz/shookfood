@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { IngredientCatalogItem, Menu, MenuItem, ShoppingList } from '../../menu.data-model';
 import { MenuService } from '../menu.service';
-import { combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
-import { Observable, OperatorFunction } from 'rxjs';
+import{DownloadService} from '../../../download.service';
+import { combineLatest} from 'rxjs';
 
 @Component({
   selector: 'app-menu-builder',
   templateUrl: './menu-builder.component.html',
 })
 export class MenuBuilderComponent implements OnInit {
+  @ViewChild('shoppingListTable', { static: false }) shoppingListTable: ElementRef;
+
   menuForm!: FormGroup;
 
   allItems: any[] = [];
@@ -22,22 +24,26 @@ export class MenuBuilderComponent implements OnInit {
   saveSuccess: boolean = false;
   saveError: boolean = false;
   ingredientsCatalog: IngredientCatalogItem[];
+  buyers: string[] = [];
 
   constructor(private fb: FormBuilder,
-    private menuService: MenuService) {}
+    private menuService: MenuService,
+    private downloadService: DownloadService) {}
 
   ngOnInit() {
     var items$ = this.menuService.getItems();
     var categories$ = this.menuService.getConfigData('menuCategories');
     var ingredients$ = this.menuService.getIngredients();
+    var buyers$ = this.menuService.getConfigData("buyers");
 
-    combineLatest([items$, categories$, ingredients$]).subscribe({
-      next: ([items, categories, ingredients])=>{
+    combineLatest([items$, categories$, ingredients$, buyers$]).subscribe({
+      next: ([items, categories, ingredients, buyers])=>{
         console.log("Items: ", items);
         this.createMenuSelection(items);
         this.categories = categories;
         this.ingredientsCatalog = ingredients;
-        console.log("ingredientsCatalog: ", ingredients);
+        this.buyers = buyers;
+        console.log("Buyers: ", this.buyers);
       },
       error: (error)=>{
         console.log("Error occured: ", error);
@@ -48,8 +54,9 @@ export class MenuBuilderComponent implements OnInit {
 
     this.menuForm = this.fb.group({
       name: ['', Validators.required],
-      eventDate: [new Date(), Validators.required],
-      guests: [10, Validators.required],
+      eventDate: ['', Validators.required],
+      adultGuests: [10, Validators.required],
+      childGuests: [2, Validators.required],
       items: [[], Validators.required],
       shoppingList: this.fb.array([]),
     });
@@ -82,28 +89,33 @@ export class MenuBuilderComponent implements OnInit {
   }
 
   buildShoppingList(){
-    var qtyFactor = this.menuForm.value.guests / 10;
+    var qtyFactor = (this.menuForm.value.adultGuests+this.menuForm.value.childGuests*0.5) / 10;
 
-    this.shoppingList.items = [];
+    if(!this.shoppingList.items){
+      this.shoppingList.items = [];
+    } else if(this.shoppingList.items.length > 0){
+      this.shoppingList.items = this.shoppingList.items.filter(sli=>sli.mode=='manual');
+    }
 
     this.itemsArray.forEach(category=>{
       category.items.forEach(item=>{
         item.ingredients.forEach(ingr=>{
-          var slItem = this.shoppingList.items.find(it=>it.name===ingr.name);
+          var slItem = this.shoppingList.items.find(it=>it.name===ingr.name && it.buyer==item.buyer);
           var ici = this.ingredientsCatalog.find(it=>it.name === ingr.name) || {name:ingr.name, department: ingr.department};
           if(!slItem){
             slItem = {
-              buyer: '',
+              buyer: item.buyer,
               comments: '',
               department: ici.department || '-',
               name: ingr.name,
               quantity: 0,
-              unit: ingr.unit
+              unit: ingr.unit,
+              mode: 'auto'
             }
             this.shoppingList.items.push(slItem);
           }
 
-          slItem.quantity += (ingr.quantity * qtyFactor);
+          slItem.quantity += Math.round((ingr.quantity * qtyFactor));
           if(slItem.comments.length > 0){
             slItem.comments += `, ${item.name}`;
           } else{
@@ -172,6 +184,25 @@ export class MenuBuilderComponent implements OnInit {
     this.initializeItemsArray(selectedItems);
 
     console.log("All items: ", this.allItems);
+  }
 
+  setMenuItemBuery(menuItem: MenuItem, buyer: string){
+    menuItem.buyer = buyer;
+  }
+
+  addManulItemToShoppingList(){
+    this.shoppingList.items.unshift({
+      mode:'manual',
+      buyer: '',
+      unit: '',
+      comments: '',
+      department: '',
+      name: '',
+      quantity: 1
+    });
+  }
+
+  downloadShoppingList(){
+    this.downloadService.downloadExcel(this.shoppingListTable.nativeElement)
   }
 }

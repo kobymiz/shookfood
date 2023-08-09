@@ -31,8 +31,18 @@
                 <input type="text" formControlName="eventDate" class="form-control" id="eventdate">
               </div>
               <div class="form-group mb-3">
-                <label for="eventDate">כמות אורחים:</label>
-                <input type="number" formControlName="guests" class="form-control" id="guests">
+                <label for="guestCount" class="form-label">כמות אורחים:</label>
+                <div class="input-group  w-25 mb-3">
+                    <input type="number" class="form-control" id="adultGuests" formControlName="adultGuests" min="0" max="999">
+                    <span class="input-group-text w-75">מבוגרים (מעל גיל 13)</span>
+                </div>
+                <div class="input-group w-25">
+                  <input type="number" class="form-control" id="childGuests" formControlName="childGuests" min="0" max="999">
+                  <span class="input-group-text  w-75">ילדים (5-12)</span>
+                </div>
+
+                <!--<label for="eventDate">כמות אורחים:</label>
+                <input type="number" formControlName="guests" class="form-control" id="guests">-->
               </div>
               <hr />
               <div>
@@ -54,16 +64,37 @@
                   <li class="list-group-item " [ngClass]="{'list-group-item-secondary': even}" *ngFor="let category of itemsArray; let even=even">
                     <p class="fw-bold">{{category.name}}</p>
                     <div class="d-flex flex-wrap">
-                      <button type="button" class="btn btn-sm me-2 mb-2" (click)="onRemoveItem(category, item)" [ngClass]="category.colorClass" *ngFor="let item of category.items">{{item.name}} <i class="bi bi-trash ms-2"></i></button>
+                      <!--<button type="button" class="btn btn-sm me-2 mb-2" (click)="onRemoveItem(category, item)" [ngClass]="category.colorClass" *ngFor="let item of category.items">{{item.name}} <i class="bi bi-trash ms-2"></i></button>-->
+                      <div class="btn btn-sm me-2 mb-2 d-flex justify-content-between align-items-center" [ngClass]="category.colorClass" *ngFor="let item of category.items">
+                        <div>
+                          {{item.name}}
+                          <div ngbDropdown class="d-block">
+                            <button type="button" class="btn btn-sm btn-light w-100" ngbDropdownToggle>
+                              {{item.buyer || 'בחר אחראי'}}
+                            </button>
+                            <div ngbDropdownMenu>
+                              <button type="button" ngbDropdownItem *ngFor="let b of buyers" (click)="setMenuItemBuery(item, b)">{{b}}</button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <i class="bi bi-trash ms-2" (click)="onRemoveItem(category, item)"></i></div>
                     </div>
                   </li>
                 </ul>
               </div>
               <hr />
-
+            </form>
               <div>
-                <h5>רשימת קניות</h5>
-                <table class="table">
+                <h5 class="d-flex justify-content-between">
+                  <span>רשימת קניות</span>
+                  <div>
+                    <button type="button" class="btn btn-sm btn-success" (click)="addManulItemToShoppingList()"><i class="bi bi-plus"></i> הוסף פריט לרשימה</button>
+                    <button type="button" class="btn btn-sm btn-warning" (click)="downloadShoppingList()">הורד רשימת קניות</button>
+                  </div>
+
+                </h5>
+                <table class="table" #shoppingListTable>
                   <thead>
                     <tr>
                       <th>מצרך</th>
@@ -75,13 +106,20 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of shoppingList.items">
-                      <td>{{item.name}}</td>
-                      <td>{{item.department}}</td>
-                      <td>{{item.quantity}}</td>
-                      <td>{{item.unit}}</td>
-                      <td>{{item.buyer}}</td>
-                      <td>{{item.comments}}</td>
+                    <tr *ngFor="let item of shoppingList.items" [ngClass]="{'table-active': item.mode=='manual'}">
+                      <td *ngIf="item.mode=='auto'">{{item.name}}</td>
+                      <td *ngIf="item.mode=='auto'">{{item.department}}</td>
+                      <td *ngIf="item.mode=='auto'">{{item.quantity}}</td>
+                      <td *ngIf="item.mode=='auto'">{{item.unit}}</td>
+                      <td *ngIf="item.mode=='auto'">{{item.buyer}}</td>
+                      <td *ngIf="item.mode=='auto'">{{item.comments}}</td>
+
+                      <td *ngIf="item.mode=='manual'"><input class="form-control" type="text" [(ngModel)]="item.name" /></td>
+                      <td *ngIf="item.mode=='manual'"><input class="form-control"  type="text" [(ngModel)]="item.department" /></td>
+                      <td *ngIf="item.mode=='manual'"><input class="form-control"  type="number" [(ngModel)]="item.quantity" /></td>
+                      <td *ngIf="item.mode=='manual'"><input class="form-control"  type="text" [(ngModel)]="item.unit" /></td>
+                      <td *ngIf="item.mode=='manual'"><input class="form-control"  type="text" [(ngModel)]="item.buyer" /></td>
+                      <td *ngIf="item.mode=='manual'"><input class="form-control"  type="text" [(ngModel)]="item.comments" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -95,7 +133,6 @@
                   <span *ngIf="saving"  class="spinner-border spinner-border-sm"></span>
                 </button>
               </div>
-            </form>
           </div>
         </div>
       </div>

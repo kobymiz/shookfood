@@ -1,6 +1,7 @@
 export interface MenuItem{
   name: string
   category: string
+  buyer: string
   ingredients: MenuIngredient[]
 }
 
@@ -34,7 +35,8 @@ export interface ShoppingListItem{
   unit: string
   buyer: string
   department: string
-  comments: string
+  comments: string,
+  mode: 'manual' | 'auto'
 }
 
 export interface ConfigData {
