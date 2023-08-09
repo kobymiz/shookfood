@@ -56,9 +56,11 @@ export class BookingDetailsComponent implements OnInit {
   }
 
   displayAvailableSlots(wsAvailableSlots:number){
-    if(wsAvailableSlots > this.maxAvailableSlotsToShow){
-      return Math.floor(Math.random() * (this.maxAvailableSlotsToShow - 2 + 1) + 2);
-    }
+    // if(wsAvailableSlots > this.maxAvailableSlotsToShow){
+    //   return Math.floor(Math.random() * (this.maxAvailableSlotsToShow - 2 + 1) + 2);
+    // }
+
+    // return wsAvailableSlots;
 
     return wsAvailableSlots;
   }

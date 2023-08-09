@@ -43,7 +43,7 @@ export class UpsertRecipeComponent implements OnInit {
       category_id: [null, Validators.required], // Use null as the initial value for the dropdown
       image: '',
       ingredients: this.fb.array([this.createIngredient()]), // Initial ingredient form control      
-      instructions: this.fb.array([new FormControl('', Validators.required)]),
+      instructions: this.fb.array([new FormControl('')]),
       subRecipes: this.fb.array([this.createSubRecipe()])
     });
   }
@@ -109,7 +109,7 @@ export class UpsertRecipeComponent implements OnInit {
     if(recipe.subRecipes && recipe.subRecipes.length >0){
       this.alignFormArrayLength(recipe.subRecipes, this.subRecipes, ()=>{this.addSubRecipe()});
       recipe.subRecipes.forEach((sr, index)=>{
-        var formSubRecipe = this.subRecipes[index];
+        var formSubRecipe = this.subRecipes.controls[index];        
         this.alignFormArrayLength(sr.ingredients, this.srIngredients(formSubRecipe), ()=>{this.addSubIngredient(formSubRecipe)});
         this.alignFormArrayLength(sr.instructions, this.srInstructions(formSubRecipe), ()=>{this.addSubInstruction(formSubRecipe)});        
         formSubRecipe.patchValue({
@@ -117,8 +117,7 @@ export class UpsertRecipeComponent implements OnInit {
           ingredients: sr.ingredients,
           instructions: sr.instructions
         })
-      });
-      
+      });      
     }
   }
 
@@ -133,7 +132,7 @@ export class UpsertRecipeComponent implements OnInit {
       for (let i = 0; i < numElementsToAdd; i++) {
         additemsCallback();
       }
-    }
+    }    
   }
 
   // Convenience getter for easy access to form controls
@@ -220,7 +219,16 @@ export class UpsertRecipeComponent implements OnInit {
     this.subRecipes.removeAt(index);
   }
 
-  onSubmit() {
+  onSubmit() {    
+    if(this.mode == 'complex'){
+      this.instructions.clear();
+      this.ingredients.clear();
+    } else{
+      this.subRecipes.clear();
+    }
+
+    console.log("Submitting Form: ", this.recipeForm);
+    console.log("Valid: ", this.recipeForm.valid);
     if (this.recipeForm.valid) {
       const formData = this.recipeForm.value;
       const recipe: Recipe = {

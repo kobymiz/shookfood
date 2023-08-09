@@ -12,7 +12,34 @@
         <button class="btn btn-primary mt-3" (click)="goBack()"><i class="bi bi-arrow-right me-2"></i> חזרה למתכונים</button>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-6" *ngIf="mode=='complex'">
+        <div class="card mb-3" *ngFor="let sr of recipe.subRecipes; let i=index">
+          <div class="card-header text-dark">שלב {{i+1}} - {{sr.name}}</div>
+          <div class="card-body">
+            <p class="fw-bold text-dark">רשימת המרכיבים</p>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let ingredient of sr.ingredients">
+                <div class="row">
+                  <div class="col-4 fw-bold">{{ ingredient.name }}</div>
+                  <div class="col-8">{{ ingredient.quantity }} {{ ingredient.unit }}</div>
+                </div>
+              </li>
+            </ul>
+            <hr class="text-dark"/>
+            <p class="fw-bold text-dark">הוראות ההכנה</p>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let step of sr.instructions; let i = index">
+                <div class="row">
+                  <div class="col-2 fw-bold">{{ i + 1 }}.</div>
+                  <div class="col-8">{{ step }}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6" *ngIf="mode=='std'">
         <div class="card">
           <div class="card-header text-dark">רשימת המרכיבים</div>
           <ul class="list-group list-group-flush">

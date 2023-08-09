@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 export class ViewRecipeComponent implements OnInit {
   recipe: Recipe;
   navigateBack: boolean = false;
+  mode: 'std'|'complex' = 'std';
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +36,11 @@ export class ViewRecipeComponent implements OnInit {
     this.recipesService.getRecipeById(recipeId).subscribe({
       next: (recipe: Recipe) => {
         this.recipe = recipe;
+        if(recipe.subRecipes && recipe.subRecipes.length > 0 ){
+          this.mode = 'complex';
+        } else{
+          this.mode = 'std';
+        }
       },
       error: (error) => {
         console.error('Error fetching recipe:', error);        
