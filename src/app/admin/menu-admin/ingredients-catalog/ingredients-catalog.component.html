@@ -1,0 +1,81 @@
+<section class="page-section bg-dark" id="portfolio">
+  <div class="container px-4 px-lg-5">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary">
+            <h2 class="text-white font-weight-bold">קטלוג מוצרים</h2>
+          </div>
+          <div class="card-body">            
+            <div class="overlay" *ngIf="saving">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">שומר נתונים...</span>
+              </div>
+            </div>
+            <div class="alert alert-success" *ngIf="saveSuccess">הקטלוג עודכן בהצלחה!</div>
+            <div class="alert alert-danger" *ngIf="saveError">אירעה שגיאה בזמן עדכון הקטלוג</div>
+            <div class="form" class="mb-5">
+              <div>
+                <h5 class="d-flex justify-content-between">
+                  <span>רשימת קניות</span>
+                  <div>
+                    <button type="button" class="btn btn-sm btn-success me-3" (click)="onSubmit()">
+                      <span class="bi bi-save"></span>&nbsp;שמירת שינויים
+                      <span *ngIf="saving" class="spinner-border spinner-border-sm"></span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-info me-2" (click)="addNewIngredient()"><i
+                        class="bi bi-plus"></i> הוסף פריט לקטלוג</button>
+                  </div>
+
+                </h5>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>שם</th>
+                      <th>מחלקה</th>
+                      <th>&nbsp;</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of items"
+                      [ngClass]="{'table-success': item.status=='new', 'table-danger': item.status=='delete', 'table-warning': item.status=='edit'}">
+                      <td *ngIf="item.mode=='view'">{{item.item.name}}</td>
+                      <td *ngIf="item.mode=='view'">{{item.item.department}}</td>
+
+                      <td *ngIf="(item.mode=='edit' || item.mode=='adding') && item.status!='new'">{{item.item.name}}</td>
+                      <td *ngIf="(item.mode=='edit' || item.mode=='adding') && item.status=='new'"><input class="form-control" type="text"
+                        [(ngModel)]="editItem.item.name" /></td>
+                      <td *ngIf="(item.mode=='edit' || item.mode=='adding')"><input class="form-control" type="text"
+                          [(ngModel)]="editItem.item.department" /></td>
+
+                      <td>                        
+                        <button *ngIf="item.status != 'delete' && item.mode != 'adding'" type="button" class="btn btn-sm btn-danger me-2" (click)="removeIngredient(item)"><span class="bi bi-trash"></span></button>
+                        <button *ngIf="item.mode == 'adding'" type="button" class="btn btn-sm btn-danger me-2" (click)="cancelAddItem()"><span class="bi bi-trash"></span></button>
+                        <button *ngIf="item.status == 'delete'" type="button" class="btn btn-sm btn-danger me-2" (click)="undoRemoveIngredient(item)"><span class="bi bi-arrow-counterclockwise"></span></button>
+                        
+                        <button *ngIf="item.mode == 'view'"  type="button" class="btn btn-sm btn-success me-2" (click)="editIngredient(item)"><span class="bi bi-pencil"></span></button>                        
+                        <button *ngIf="(item.mode=='edit' || item.mode=='adding')"  type="button" class="btn btn-sm btn-success me-2" (click)="endEditIngredient(item)"><span class="bi bi-check"></span></button>                        
+                        <button *ngIf="item.mode == 'edit' && item.status!='new'"  type="button" class="btn btn-sm btn-warning me-2" (click)="cancelEditIngredient(item)"><span class="bi bi-x"></span></button>                        
+                        
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <hr />
+              <div class="text-center">
+                <div class="alert alert-success" *ngIf="saveSuccess">הקטלוג עודכן בהצלחה!</div>
+                <div class="alert alert-danger" *ngIf="saveError">אירעה שגיאה בזמן עדכון הקטלוג</div>
+
+                <button type="button" class="btn btn-success mt-5" (click)="onSubmit()">
+                  <span class="bi bi-save"></span>&nbsp;שמירת שינויים
+                  <span *ngIf="saving" class="spinner-border spinner-border-sm"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+</section>

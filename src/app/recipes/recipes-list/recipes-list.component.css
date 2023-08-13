@@ -17,3 +17,11 @@
     flex: 0 0 50%; /* On smaller screens, display 2 items per row */
   }
 }
+
+.recipe-card .description{
+  overflow: hidden;
+  display: -webkit-box;
+   -webkit-line-clamp: 2; /* number of lines to show */
+           line-clamp: 2; 
+   -webkit-box-orient: vertical;
+}

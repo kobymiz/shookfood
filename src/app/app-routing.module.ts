@@ -3,6 +3,7 @@ import {GalleryComponent} from './gallery/gallery.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthFormComponent } from './auth-form/auth-form.component';
+import { authGuard } from './auth-guard';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -25,7 +26,9 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+    canActivate: [authGuard],
+    
   }
 ];
 

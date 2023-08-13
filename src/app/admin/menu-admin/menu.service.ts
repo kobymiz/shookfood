@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { ConfigData, IngredientCatalogItem, Menu, MenuIngredient, MenuItem } from '../menu.data-model';
 
@@ -121,6 +121,10 @@ export class MenuService {
   }
 
   upsertIngredientsCatalog(items: IngredientCatalogItem[]) {
+    if(!items || items.length == 0){
+      return of(true);
+    }
+
     return this.http.post<any>(`${this.apiURL}/${this.apiendpoints.ingredients}`, {items}).pipe(
       map(response=>{
         if(response.statusCode == 200){
@@ -132,6 +136,33 @@ export class MenuService {
       }),
       catchError(error => {
         console.error('Error saving item:', error);
+        return of(false);
+      })
+    )
+  }
+
+  deleteIngredientsCatalog(items: IngredientCatalogItem[]) {
+    if(!items || items.length == 0){
+      return of(true);
+    }
+    var options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: {items}
+    };
+    
+    return this.http.delete<any>(`${this.apiURL}/${this.apiendpoints.ingredients}`, options).pipe(
+      map(response=>{
+        if(response.statusCode == 200){
+          console.log("Delete items success: ", response);
+          return true;
+        }
+        console.log("Error deleting items: ", response);
+        return false
+      }),
+      catchError(error => {
+        console.error('Error deleting items:', error);
         return of(false);
       })
     )
