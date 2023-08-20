@@ -4,6 +4,7 @@ import { UpsertMenuItemComponent } from './menu-admin/upsert-menu-item/upsert-me
 import { MenuBuilderComponent } from './menu-admin/menu-builder/menu-builder.component';
 import { IngredientsCatalogComponent } from './menu-admin/ingredients-catalog/ingredients-catalog.component';
 import { AdminHomePageComponent } from './admin-homepage.component';
+import { AdminWorkshopComponent } from './workshop/admin-workshop.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,11 @@ const routes: Routes = [
   {
     path: 'ingredients-catalog',
     component: IngredientsCatalogComponent
-  }
+  },
+  {
+    path: 'workshop',
+    component: AdminWorkshopComponent
+  },
 ];
 
 @NgModule({

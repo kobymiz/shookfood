@@ -8,12 +8,14 @@ import { UpsertMenuItemComponent } from './menu-admin/upsert-menu-item/upsert-me
 import { SharedModule } from '../shared.module';
 import { MenuBuilderComponent } from './menu-admin/menu-builder/menu-builder.component';
 import { IngredientsCatalogComponent } from './menu-admin/ingredients-catalog/ingredients-catalog.component';
+import { AdminWorkshopComponent } from './workshop/admin-workshop.component';
 
 @NgModule({
   declarations: [
     UpsertMenuItemComponent,
     MenuBuilderComponent,
-    IngredientsCatalogComponent
+    IngredientsCatalogComponent,
+    AdminWorkshopComponent
   ],
   imports: [
     CommonModule,

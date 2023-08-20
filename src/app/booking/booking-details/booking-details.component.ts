@@ -99,6 +99,7 @@ export class BookingDetailsComponent implements OnInit {
       email: formValue.email??'',
       phoneNumber: formValue.phoneNumber??'',
       paid: false,
+      approved: false,
       regsiterationDate: new Date()
     };
 

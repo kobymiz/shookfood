@@ -1,0 +1,84 @@
+<section class="page-section bg-dark" id="portfolio">
+  <div class="container px-4 px-lg-5">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary">
+            <h2 class="text-white font-weight-bold">ניהול הרשמה לסדנאות</h2>
+          </div>
+          <div class="card-body">            
+            <div class="overlay" *ngIf="saving">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">שומר נתונים...</span>
+              </div>
+            </div>
+            <div class="alert alert-success" *ngIf="saveSuccess">העדכון בוצע בהצלחה!</div>
+            <div class="alert alert-danger" *ngIf="saveError">אירעה שגיאה בזמן עדכון ההרשמה</div>
+            <div class="form" class="mb-5">              
+              <div>
+                <h5 class="d-flex justify-content-between">
+                  <span>רשימת משתתפים</span>
+                  <div class="row g-2">
+                    <div class="col-auto">
+                      <select class="form-select form-select-sm" (change)="onSelectWorkshop($event)">
+                        <option value="">בחירת סדנא</option>
+                        <option *ngFor="let item of items" [value]="item.workshopDate">{{getWorkshopTitle(workshop, item)}}</option>
+                      </select>
+                    </div>
+                    <div class="col-auto">
+                      <button type="button" class="btn btn-sm btn-success me-3" (click)="onSubmit()">
+                        <span class="bi bi-save"></span>&nbsp;שמירת שינויים
+                        <span *ngIf="saving" class="spinner-border spinner-border-sm"></span>
+                      </button>                    
+                    </div>                    
+                  </div>
+
+                </h5>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>שם</th>
+                      <th>טלפון</th>
+                      <th>כתובת דואר</th>                      
+                      <th>תאריך הרשמה</th>
+                      <th>הרשמה מאושרת</th>
+                      <th>שולם</th>
+                      <th>תאריך תשלום</th>
+                      <th>אמצעי תשלום</th>
+                      <th>מספר אסמכתא</th>
+                      <th>&nbsp;</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="selectedSlot">   
+                      <tr *ngFor="let user of selectedSlot.slot.users">
+                        <td>{{user.fullName}}</td>
+                        <td>{{user.phoneNumber}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.regsiterationDate | date: 'yyyy-MM-dd'}}</td>
+                        <td>{{user.approved|boolFormatter}}</td>
+                        <td>{{user.paid|boolFormatter}}</td>
+                        <td>{{user.paymentDate | date: 'yyyy-MM-dd'}}</td>
+                        <td>{{user.paymentMethod}}</td>
+                        <td>{{user.paymentApprovalNumber}}</td>
+                        
+                      </tr>                 
+                  </tbody>
+                </table>
+              </div>
+              <hr />
+              <div class="text-center">
+                <div class="alert alert-success" *ngIf="saveSuccess">הקטלוג עודכן בהצלחה!</div>
+                <div class="alert alert-danger" *ngIf="saveError">אירעה שגיאה בזמן עדכון הקטלוג</div>
+
+                <button type="button" class="btn btn-success mt-5" (click)="onSubmit()">
+                  <span class="bi bi-save"></span>&nbsp;שמירת שינויים
+                  <span *ngIf="saving" class="spinner-border spinner-border-sm"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+</section>
