@@ -1,5 +1,5 @@
 import { combineLatest } from 'rxjs';
-import { Workshop, WorkshopSlot } from '../../booking/data-model/booking-data-model';
+import { User, Workshop, WorkshopSlot } from '../../booking/data-model/booking-data-model';
 import { BookingService } from './../../booking/booking.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -7,19 +7,25 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-workshop',
   templateUrl: './admin-workshop.component.html',
 })
-export class AdminWorkshopComponent implements OnInit {      
-  
+export class AdminWorkshopComponent implements OnInit {
+
   workshop: Workshop;
   items: WorkshopSlot[] = [];
+  deleteItems: User[] = [];
+  editItems: User[] = [];
   selectedSlot: WorkshopSlot;
   saving = false;
   saveSuccess = false;
   saveError = false;
+
+  editItem: User|undefined;
+  origItem: { id: string; fullName: string; phoneNumber: string; email: string; approved: boolean; paid: boolean; regsiterationDate: Date; paymentDate?: string | undefined; paymentMethod?: string | undefined; paymentApprovalNumber?: string | undefined; };
+
   constructor(private bookingService: BookingService){
 
   }
 
-  ngOnInit() {      
+  ngOnInit() {
     var workshop$ = this.bookingService.getWorkshopByIdAsync('ws-1');
     var slots$ = this.bookingService.getWorkshopSlots('ws-1');
 
@@ -29,8 +35,8 @@ export class AdminWorkshopComponent implements OnInit {
 
       this.workshop = workshop!;
       this.items = slots;
-    });    
-  }  
+    });
+  }
 
   onSelectWorkshop(event){
     var ws = this.items.find(ws=>ws.workshopDate==event.target.value);
@@ -39,8 +45,42 @@ export class AdminWorkshopComponent implements OnInit {
     this.selectedSlot = ws!;
   }
 
-  onSubmit(){
+  onEditUser(user: User){
+    this.editItem = user;
+    this.origItem = {...user}
+  }
 
+  onEndEditUser(user: User){
+    this.editItem = undefined;
+    if(this.editItems.findIndex(u=>u==user) < 0){
+      this.editItems.push(user);
+    }
+
+  }
+
+  onCancelEditUser(user: User){
+    this.editItem = undefined;
+    user = {...this.origItem};
+  }
+
+  onSubmit(){
+    this.saveError = false;
+    this.saveSuccess = false;
+    this.saving = true;
+
+    this.bookingService.updateWorkshopSlot(this.selectedSlot).subscribe({
+      next: (success)=>{
+        this.saving = false;
+        this.saveError = !success;
+        this.saveSuccess = success;
+
+      },
+       error: (error)=>{
+        this.saving = false;
+        this.saveSuccess = false;
+        this.saveError = true;
+       }
+    });
   }
 
   getWorkshopTitle(workshop, slot){

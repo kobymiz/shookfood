@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, switchMap, tap } from 'rxjs';
+import { Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { Workshop, WorkshopSlot, APIResponse, User } from './data-model/booking-data-model';
 
 export interface WorkshopSearchParams {
@@ -26,6 +26,7 @@ var database:Database = {
   providedIn: 'root'
 })
 export class BookingService {
+
   private workshopsLoaded = false;
 
   constructor(private http:HttpClient) {
@@ -87,6 +88,17 @@ export class BookingService {
       return of([]);
     }), tap(data=>{
       console.log("Data: ", data);
+    }));
+  }
+
+  updateWorkshopSlot(slot: WorkshopSlot) {
+    return this.http.post<APIResponse>(wsSlotsUrl, slot).pipe(switchMap(response=>{
+      console.log("Response: ", response);
+      if(response.status == 0){
+        return of(true);
+      }
+      console.log("Error occured when getting data from backend");
+      return throwError(()=>{return new Error(response.error)});
     }));
   }
 
