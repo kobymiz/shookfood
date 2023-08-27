@@ -100,6 +100,7 @@ export class BookingDetailsComponent implements OnInit {
       phoneNumber: formValue.phoneNumber??'',
       paid: false,
       approved: false,
+      waitingList: this.isWaitingListMode(this.selectedSlot!),
       regsiterationDate: new Date()
     };
 
@@ -131,6 +132,20 @@ export class BookingDetailsComponent implements OnInit {
       })
     }
 
+  }
+
+  registrationIsClosed(workshopSlot: WorkshopSlot){
+    return workshopSlot.slot.openForRegistration
+  }
+
+  registrationOpened(workshopSlot: WorkshopSlot){
+    return workshopSlot.slot.availableSlots > 0;
+  }
+
+  isWaitingListMode(workshopSlot: WorkshopSlot): boolean {
+    return workshopSlot.slot.availableSlots == 0
+      && workshopSlot.slot.allowedWaitingListCount > 0
+      && workshopSlot.slot.users.length < workshopSlot.slot.totalSlots + workshopSlot.slot.allowedWaitingListCount;
   }
 
 

@@ -19,7 +19,7 @@ export class AdminWorkshopComponent implements OnInit {
   saveError = false;
 
   editItem: User|undefined;
-  origItem: { id: string; fullName: string; phoneNumber: string; email: string; approved: boolean; paid: boolean; regsiterationDate: Date; paymentDate?: string | undefined; paymentMethod?: string | undefined; paymentApprovalNumber?: string | undefined; };
+  origItem: { id: string; fullName: string; phoneNumber: string; email: string; approved: boolean; paid: boolean; regsiterationDate: Date; paymentDate?: string | undefined; paymentMethod?: string | undefined; paymentApprovalNumber?: string | undefined; waitingList: boolean };
 
   constructor(private bookingService: BookingService){
 

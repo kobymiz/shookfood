@@ -4,7 +4,7 @@ export interface APIResponse{
   data?: any;
 }
 
-export interface User{  
+export interface User{
   id: string
   fullName: string,
   phoneNumber: string,
@@ -14,13 +14,16 @@ export interface User{
   regsiterationDate: Date,
   paymentDate?: string,
   paymentMethod?: string,
-  paymentApprovalNumber?: string
+  paymentApprovalNumber?: string,
+  waitingList: boolean
 }
 
 export interface  Slot {
   date: Date,
   totalSlots: number,
   availableSlots: number,
+  allowedWaitingListCount: number,
+  openForRegistration: boolean
   users: User[]
 }
 
