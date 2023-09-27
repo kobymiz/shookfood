@@ -63,6 +63,13 @@ export class AdminWorkshopComponent implements OnInit {
     user = {...this.origItem};
   }
 
+  onDeleteUser(user:User){
+    var index = this.selectedSlot.slot.users.findIndex(u=>u==user);
+    if(index >= 0){
+      this.selectedSlot.slot.users.splice(index, 1);
+    }
+  }
+
   onSubmit(){
     this.saveError = false;
     this.saveSuccess = false;

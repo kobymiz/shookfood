@@ -86,6 +86,7 @@
                         <td *ngIf="user != editItem">{{user.paymentMethod}}</td>
                         <td *ngIf="user != editItem">{{user.paymentApprovalNumber}}</td>
                         <td *ngIf="user != editItem"><button type="button" class="btn btn-sm btn-success" (click)="onEditUser(user)"><i class="bi bi-pencil"></i></button></td>
+                        <td *ngIf="user != editItem"><button type="button" class="btn btn-sm btn-danger" (click)="onDeleteUser(user)"><i class="bi bi-trash"></i></button></td>
 
 
                         <td *ngIf="user == editItem"><input type="text" [(ngModel)]="user.fullName" class="form-control"></td>
